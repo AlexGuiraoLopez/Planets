@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package planets;
+package mainclass;
 
 /**
  *
  * @author Alex Guirao López <aguiraol2021@cepnet.net>
  */
-public class Planets {
+public class MainClass {
 
     /**
      * @param args the command line arguments

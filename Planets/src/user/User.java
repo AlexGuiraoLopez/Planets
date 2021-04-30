@@ -1,4 +1,5 @@
 package user;
+import elements.Planet;
 import input.Keyboard;
 /**
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
@@ -20,7 +21,7 @@ public class User
         return name;
     }
     
-    public static int insertUnsigned(String message)
+    public static int insertUnsignedInt(String message)
     {
         int number;
         
@@ -34,6 +35,31 @@ public class User
         }while(number<=0);
         
         return number;
+    }
+    
+    public static float insertUnsignedFloat(String message)
+    {
+        float number;
+        
+        do{
+            System.out.println(message);
+            number=Keyboard.readFloat();
+            if(number<=0)
+            {
+                System.out.println("El dato debe ser mayor a 0");
+            }
+        }while(number<=0);
+        
+        return number;
+    }
+    
+    public static Planet insertPlanet()
+    {
+        String name = insertText(Planet.NAME_MAX_LENGTH, "Introduce el nombre del planeta");
+        int diameter= insertUnsignedInt("Introduce su diametro");
+        float sunDistance=insertUnsignedFloat("Introduce la distancia al sol");
+        
+        return new Planet(name, diameter, sunDistance);
     }
     
 }

@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 public class Menu 
 {
-    private ArrayList<String> menuOptions; /*Texto para los menús*/
+    private String[] menuOptions; /*Texto para los menús*/
     
-    public Menu(ArrayList menuOptions)
+    public Menu(String[] menuOptions)
     {
         this.menuOptions=menuOptions;
     }
@@ -20,11 +20,11 @@ public class Menu
      */
     public void showMenu()
     {
-        System.out.println(menuOptions.get(0)); //Cabecera del menú
+        System.out.println(menuOptions[0]); //Cabecera del menú
         
-        for (int i = 1; i < menuOptions.size(); i++) 
+        for (int i = 1; i < menuOptions.length; i++) 
         {
-            System.out.println("  "+menuOptions.get(i));  //Opciones del menú
+            System.out.println("  "+menuOptions[i]);  //Opciones del menú
         }
         System.out.print("Introduce una opcion: ");
     }

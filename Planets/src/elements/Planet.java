@@ -27,6 +27,10 @@ public class Planet
         return new File(this.name+".png");
     }
     
+    /**
+     * Tamaño de los registros para los atributos de los planetas.
+     * @return tamaño de cada registro.
+     */
     public static int size()
     {
         return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES ;

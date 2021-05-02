@@ -1,6 +1,8 @@
 package user;
 import elements.Planet;
+import filemanipulation.PlanetFileControl;
 import input.Keyboard;
+import visualfront.ConsoleColors;
 /**
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
@@ -53,13 +55,28 @@ public class User
         return number;
     }
     
-    public static Planet insertPlanet()
+    public static Planet createPlanet()
     {
         String name = insertText(Planet.NAME_MAX_LENGTH, "Introduce el nombre del planeta");
         int diameter= insertUnsignedInt("Introduce su diametro");
         float sunDistance=insertUnsignedFloat("Introduce la distancia al sol");
         
         return new Planet(name, diameter, sunDistance);
+    }
+    
+      public static int selectPlanet()
+    {
+        int userAns=0;
+        
+        do{
+            userAns=Keyboard.getInt(ConsoleColors.GREEN+"Selecciona el planeta:");
+            if (userAns<1||userAns>PlanetFileControl.getPlanetAmount())
+            {
+                System.out.println(ConsoleColors.RED+"Selecciona una respuesta válida");
+            }
+        }while(userAns<1||userAns>PlanetFileControl.getPlanetAmount());
+        
+        return userAns;
     }
     
 }

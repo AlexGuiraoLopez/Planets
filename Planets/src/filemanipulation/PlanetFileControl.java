@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import visualfront.ConsoleColors;
 
 /** 
@@ -15,8 +13,12 @@ import visualfront.ConsoleColors;
  */
 public class PlanetFileControl 
 {
-    final static String PATH="datafiles/planets.bin";
+    final private static String PATH="datafiles/planets.bin";
     
+    public static String getPath()
+    {
+        return PATH;
+    } 
      //===================READ===================
     /**
      * Busca el nombre de un planeta en un archivo y comprueba si ya existe.
@@ -126,7 +128,7 @@ public class PlanetFileControl
                 for (int i = 0;i<planetAmount;i++)
                 {
                     raf.seek(i*Planet.size());
-                    bName=new byte[Planet.NAME_MAX_LENGTH]; //ERROR EN OPCION 3 
+                    bName=new byte[Planet.NAME_MAX_LENGTH]; 
                     raf.read(bName);
                     name= new String(bName).trim();
                     nameList.add(name);
@@ -139,6 +141,72 @@ public class PlanetFileControl
             }
         }
         return nameList;
+    }
+      /**
+     * Guarda la lista de nombres para los planetas del archivo.
+     * @return lista con los nombres de los planetas en formato vertical y numerado.
+     */
+    public static ArrayList<Planet> readPlanetList()
+    {
+        ArrayList<Planet> planetList = new ArrayList();
+        File file = new File (PATH);
+        Planet planet;
+        String name;
+        int diameter;
+        float sunDistance;
+        byte [] bName;
+        if (file.exists())
+        {
+            int planetAmount= (int)file.length()/Planet.size();
+            try {
+                RandomAccessFile raf = new RandomAccessFile(file, "r");
+                for (int i = 0;i<planetAmount;i++)
+                {
+                    raf.seek(i*Planet.size());
+                    bName=new byte[Planet.NAME_MAX_LENGTH]; 
+                    raf.read(bName);
+                    name= new String(bName).trim();
+                    diameter = raf.readInt();
+                    sunDistance = raf.readFloat();
+                    
+                    planetList.add(new Planet(name,diameter, sunDistance));
+                }
+                raf.close();
+            } 
+            catch (IOException ex)
+            {
+                System.out.println("No se pudo acceder al archivo.");
+            }
+        }
+        return planetList;
+    }
+    
+    public static String readPlanetName(int planetPosition)
+    {
+        File file = new File (PATH);
+        String name=null;
+        byte [] bName;
+        if (file.exists())
+        {
+            try {
+                RandomAccessFile raf = new RandomAccessFile(file, "r");
+               
+                raf.seek(planetPosition*Planet.size());
+                bName=new byte[Planet.NAME_MAX_LENGTH]; 
+                raf.read(bName);
+                name= new String(bName).trim();
+                raf.close();
+            } 
+            catch (FileNotFoundException ex)
+            {
+                System.out.println("No se pudo encontrar el archivo." +ex);
+            }
+            catch (IOException ex)
+            {
+                System.out.println("No se pudo acceder al archivo."+ex);
+            }
+        }
+        return name;
     }
     
     /**

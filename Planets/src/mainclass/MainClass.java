@@ -1,6 +1,7 @@
 package mainclass;
 
 import elements.Planet;
+import filemanipulation.HtmlFileControl;
 import filemanipulation.PlanetFileControl;
 import input.Keyboard;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import visualfront.Menu;
 /**
  * @author Alex Guirao López <aguiraol2021@cepnet.net>
  */
-
+//Alt + shift + m
 public class MainClass 
 {
     final static String [] mainMenuLines = new String [] {"- Bienvenido -",
@@ -38,8 +39,16 @@ public class MainClass
                     break;
                 case 2:
                     break;
-                case 3: showPlanetNames();
-                PlanetFileControl.readPlanetInfo(User.selectPlanet()-1);
+                case 3: 
+                    showPlanetNames();
+                    PlanetFileControl.readPlanetInfo(User.selectPlanet()-1);
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    showPlanetNames();
+                    HtmlFileControl.generatePlanetFile(User.selectPlanet()-1);
+                break;
                    
             }
         }while(userAns!=0);

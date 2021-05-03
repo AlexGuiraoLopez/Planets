@@ -7,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import visualfront.ConsoleColors;
 
 /**
@@ -59,6 +57,7 @@ public class HtmlFileControl
             }   
         }
     }
+    
     
     private static void writeDocType(BufferedWriter bf)
     {
@@ -143,5 +142,14 @@ public class HtmlFileControl
         {
             System.out.println("No se ha podido acceder al archivo");
         }
+    }
+    
+    //=====================EXECUTION============================
+    public static void executeFile(int planetPosition)
+    {
+        File planetFile = new File(PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".png");
+        
+        //Introducir método para ejecutar el archivo.
+        
     }
 }

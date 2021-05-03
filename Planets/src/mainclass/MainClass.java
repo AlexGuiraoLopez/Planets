@@ -49,6 +49,9 @@ public class MainClass
                     showPlanetNames();
                     HtmlFileControl.generatePlanetFile(User.selectPlanet()-1);
                 break;
+                case 6:
+                    showPlanetNames();
+                    HtmlFileControl.executeFile(User.selectPlanet()-1);
                    
             }
         }while(userAns!=0);

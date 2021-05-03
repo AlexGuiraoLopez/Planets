@@ -126,9 +126,21 @@ public class HtmlFileControl
     //=====================EXECUTION============================
     public static void executeFile(int planetPosition)
     {
-        File planetFile = new File(PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".png");
+        //String planetFilePath = PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
+        String planetFilePath = "C:\\Users\\Aresu\\Desktop\\Aresu\\DAM\\M03Programacion\\Projects\\Retos\\Planets\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
+        String webBrowserPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
         
-        //Introducir método para ejecutar el archivo.
+        Runtime r= Runtime.getRuntime();
+        Process p=null;
         
+        String [] comando = {webBrowserPath, planetFilePath};
+        
+        try {
+            p=r.exec(comando);
+        } 
+        catch (IOException ex) 
+        {
+            System.out.println("No se ha podido acceder al archivo"+ ex);
+        }
     }
 }

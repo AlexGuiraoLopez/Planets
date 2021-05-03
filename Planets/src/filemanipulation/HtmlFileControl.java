@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import visualfront.ConsoleColors;
 
 /**
@@ -33,13 +35,18 @@ public class HtmlFileControl
                 writeDocType(bf);
                 
                 openHtmlTag(bf);
-                writeHead(bf, planet);
-                openBodyTag(bf);
-                
-                writeImg(bf, planet);
-                
-                closeBodyTag(bf);
+                    writeHead(bf, planet);
+                    openBodyTag(bf);
+                    
+                        openArticleTag(bf, "objectInfo");
+                        
+                            writeImg(bf, planet);
+                            writeH1(bf, planet);
+                        closeArticleTag(bf);
+                        
+                    closeBodyTag(bf);
                 closeHtmlTag(bf);
+                    
                 
                 
                 planetFile.close();
@@ -59,89 +66,61 @@ public class HtmlFileControl
     }
     
     
-    private static void writeDocType(BufferedWriter bf)
+    private static void writeDocType(BufferedWriter bf) throws IOException
     {
-        try{
-            bf.write("<!DOCTYPE html>");
-           
-        }
-        catch (IOException ex) 
-        {
-              System.out.println("No se ha podido acceder al archivo");
-        }
+        bf.write("<!DOCTYPE html>");
     }
     
-    private static void openHtmlTag(BufferedWriter bf)
+    private static void openHtmlTag(BufferedWriter bf) throws IOException
     {
-        try {
-            bf.write("<html lang=\"es\" xmlns=\"http://www.w3.org/1999/xhtml\">");
-   
-        } 
-        catch (IOException ex) 
-        {
-            System.out.println("No se ha podido acceder al archivo");
-        }
+        bf.write("<html lang=\"es\" xmlns=\"http://www.w3.org/1999/xhtml\">");
     }
     
-    private static void closeHtmlTag(BufferedWriter bf)
+    private static void closeHtmlTag(BufferedWriter bf) throws IOException
     {
-        try {
-            bf.write("</html>");
-    
-        } 
-        catch (IOException ex) 
-        {
-            System.out.println("No se ha podido acceder al archivo");
-        }
+        bf.write("</html>");
     }
     
-    private static void writeHead(BufferedWriter bf, Planet planet)
+    private static void writeHead(BufferedWriter bf, Planet planet) throws IOException
     {
-        try {
-            bf.write("<head>"+"\n");
-            bf.write("<meta charset=\"utf-8\"/>"+"\n");
-            bf.write("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"+"\n");
-            bf.write("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"+"\n");
-            bf.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"cssfiles/normalize.css\">"+"\n");
-            bf.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"cssfiles/style.css\">"+"\n");
-            bf.write("<title>"+planet.getFormattedName().trim().toUpperCase()+"</title>"+"\n");
-            bf.write("</head>"+"\n");
-        } 
-        catch (IOException ex) 
-        {
-            System.out.println("No se ha podido acceder al archivo");
-        }
+        bf.write("<head>"+"\n");
+        bf.write("<meta charset=\"utf-8\"/>"+"\n");
+        bf.write("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"+"\n");
+        bf.write("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"+"\n");
+        bf.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"../cssfiles/normalize.css\">"+"\n");
+        bf.write("<link rel=\"stylesheet\" type=\"text/css\" href=\"../cssfiles/style.css\">"+"\n");
+        bf.write("<title>"+planet.getFormattedName().trim().toUpperCase()+"</title>"+"\n");
+        bf.write("</head>"+"\n");
     }
     
-    private static void openBodyTag(BufferedWriter bf){
-        try {
-            bf.write("<body>"+"\n");
-        } 
-        catch (IOException ex) 
-        {
-              System.out.println("No se ha podido acceder al archivo");
-        }
-    }
-    
-    private static void closeBodyTag(BufferedWriter bf){
-        try {
-            bf.write("</body>"+"\n");
-        } 
-        catch (IOException ex) 
-        {
-              System.out.println("No se ha podido acceder al archivo");
-        }
-    }
-    
-    private static void writeImg(BufferedWriter bf, Planet planet)
+    private static void openBodyTag(BufferedWriter bf) throws IOException
     {
-        try {
-            bf.write("<img src=\"../img/"+planet.getFormattedName().trim()+".png"+"\" alt=\""+planet.getFormattedName().trim()+"Image"+"\""+">");
-        } 
-        catch (IOException ex) 
-        {
-            System.out.println("No se ha podido acceder al archivo");
-        }
+        bf.write("<body>"+"\n");
+    }
+    
+    private static void closeBodyTag(BufferedWriter bf) throws IOException
+    {
+        bf.write("</body>"+"\n");
+    }
+    
+    private static void openArticleTag(BufferedWriter bf, String className) throws IOException
+    {
+       bf.write("<article class=\""+className+"\">"+"\n");
+    }
+    
+    private static void closeArticleTag(BufferedWriter bf) throws IOException
+    {
+        bf.write("</article>"+"\n");
+    }
+    
+    private static void writeH1(BufferedWriter bf, Planet planet) throws IOException
+    {
+        bf.write("<h1>"+planet.getFormattedName().trim().toUpperCase()+"</h1>"+"\n");
+    }
+    
+    private static void writeImg(BufferedWriter bf, Planet planet) throws IOException
+    {
+        bf.write("<img src=\"../img/"+planet.getFormattedName().trim()+".png"+"\" alt=\""+planet.getFormattedName().trim()+"Image"+"\""+">"+"\n");
     }
     
     //=====================EXECUTION============================

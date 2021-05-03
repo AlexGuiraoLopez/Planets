@@ -69,7 +69,7 @@ public class User
         int userAns=0;
         
         do{
-            userAns=Keyboard.getInt(ConsoleColors.GREEN+"Selecciona el planeta:");
+            userAns=Keyboard.getInt(ConsoleColors.GREEN+"Selecciona el planeta");
             if (userAns<1||userAns>PlanetFileControl.getPlanetAmount())
             {
                 System.out.println(ConsoleColors.RED+"Selecciona una respuesta válida");

@@ -1,0 +1,12 @@
+.objectInfo{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vw;
+}
+
+h1{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+}

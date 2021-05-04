@@ -18,7 +18,13 @@ public class HtmlFileControl
      * 
      * @param planetPosition 
      */
-    public static void generatePlanetFile(int planetPosition)
+    public static int HTMLFileAmount()
+    {
+        //Cómo puedo saber cuántos archivos hay en una carpeta?
+        return 1; //Provisional
+    }
+    
+    public static void generateHTMLFile(int planetPosition)
     {
         File file = new File(PlanetFileControl.getPath());
         RandomAccessFile planetFile; 

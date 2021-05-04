@@ -274,6 +274,12 @@ public class PlanetFileControl
             raf.write(planet.getFormattedName().getBytes(Charset.defaultCharset()));
             raf.writeInt(planet.getDiameter());
             raf.writeFloat(planet.getSunDistance());
+            
+            for (int i = 0;i<planet.getSatellitePosList().length;i++)
+            {
+                raf.writeInt(planet.getSatellitePosList()[i]);
+            }
+            
             raf.close();
             }
             else

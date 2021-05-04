@@ -15,7 +15,8 @@ import visualfront.Menu;
 /**
  * @author Alex Guirao López <aguiraol2021@cepnet.net>
  */
-//Alt + shift + m
+//Alt + shift + m => Comando para encapsular metodos.
+//¿Cómo y quién rellena el array de posiciones de los Satelites en los Planetas
 public class MainClass 
 {
     final static String [] mainMenuLines = new String [] {"- Bienvenido -",
@@ -58,10 +59,14 @@ public class MainClass
                     break;
                 case 5:
                     showPlanetNames();
-                    HtmlFileControl.generatePlanetFile(User.selectPlanet()-1);
+                    if (PlanetFileControl.getPlanetAmount()>0)
+                    {
+                    HtmlFileControl.generateHTMLFile(User.selectPlanet()-1);
+                    }
                 break;
                 case 6:
                     showPlanetNames();
+                    
                     HtmlFileControl.executeFile(User.selectPlanet()-1);
                    
             }

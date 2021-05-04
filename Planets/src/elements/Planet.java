@@ -32,7 +32,7 @@ public class Planet
      */
     public static int size()
     {
-        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES ;
+        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES+Integer.BYTES*MAX_SATELLITE;
     }
     
     public static String nameFormat()
@@ -62,6 +62,11 @@ public class Planet
     public float getSunDistance() {
         return sunDistance;
     }
+
+    public int[] getSatellitePosList() {
+        return satellitePosList;
+    }
+    
     
     
 }

@@ -7,8 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import visualfront.ConsoleColors;
 
 /**
@@ -129,7 +127,8 @@ public class HtmlFileControl
         
         //String planetFilePath = "C:\\Users\\Aresu\\Desktop\\Aresu\\DAM\\M03Programacion\\Projects\\Retos\\Planets\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
         //String webBrowserPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-        String planetFilePath = "C:\\Users\\nexus\\Documents\\Estudios\\DAM\\M03Programacion\\Projects\\Retos\\Planetas\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
+        //String planetFilePath = "C:\\Users\\nexus\\Documents\\Estudios\\DAM\\M03Programacion\\Projects\\Retos\\Planetas\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
+        String planetFilePath = "D:\\DAM\\M03Programacion\\Projects\\Retos\\Planets\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
         String webBrowserPath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
         
         Runtime r= Runtime.getRuntime();

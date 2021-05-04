@@ -1,8 +1,10 @@
 package mainclass;
 
 import elements.Planet;
+import elements.Satellite;
 import filemanipulation.HtmlFileControl;
 import filemanipulation.PlanetFileControl;
+import filemanipulation.SatelliteFileControl;
 import input.Keyboard;
 import java.util.ArrayList;
 import time.Time;
@@ -37,13 +39,22 @@ public class MainClass
                 case 1: Planet planet = User.createPlanet();
                             PlanetFileControl.writePlanet(planet);
                     break;
-                case 2:
+                case 2: Satellite satellite = User.createSatellite();
+                            SatelliteFileControl.writeSatellite(satellite);
                     break;
                 case 3: 
                     showPlanetNames();
-                    PlanetFileControl.readPlanetInfo(User.selectPlanet()-1);
+                    if (PlanetFileControl.getPlanetAmount()>0)
+                    {
+                        PlanetFileControl.readPlanetInfo(User.selectPlanet()-1);
+                    }
                     break;
                 case 4:
+                    showSatelliteNames();
+                    if (SatelliteFileControl.getSatelliteAmount()>0)
+                    {
+                        SatelliteFileControl.readSatelliteInfo(User.selectSatellite()-1);
+                    }
                     break;
                 case 5:
                     showPlanetNames();
@@ -67,6 +78,23 @@ public class MainClass
             ArrayList<String> planetNameList=PlanetFileControl.readPlanetNameList();
             int pos=1;
             for (String s:planetNameList)
+            {
+                System.out.println(pos+"- "+s);
+                pos++;
+            }
+        }
+    }
+    
+    public static void showSatelliteNames()
+    {
+        if (SatelliteFileControl.getSatelliteAmount()==0)
+        {
+            System.out.println(ConsoleColors.RED+"No hay satélites todavía");
+            Time.waitForSeconds(500);
+        }else{
+            ArrayList<String> satelliteNameList=SatelliteFileControl.readSatelliteNameList();
+            int pos=1;
+            for (String s:satelliteNameList)
             {
                 System.out.println(pos+"- "+s);
                 pos++;

@@ -1,6 +1,8 @@
 package user;
 import elements.Planet;
+import elements.Satellite;
 import filemanipulation.PlanetFileControl;
+import filemanipulation.SatelliteFileControl;
 import input.Keyboard;
 import visualfront.ConsoleColors;
 /**
@@ -75,6 +77,39 @@ public class User
                 System.out.println(ConsoleColors.RED+"Selecciona una respuesta válida");
             }
         }while(userAns<1||userAns>PlanetFileControl.getPlanetAmount());
+        
+        return userAns;
+    }
+      
+       public static Satellite createSatellite()
+    {
+        String name = insertText(Satellite.NAME_MAX_LENGTH, "Introduce el nombre del satélite");
+        String planetName;
+        do{
+            planetName=insertText(Planet.NAME_MAX_LENGTH,"Introduce el nombre del planeta al que orbita");
+            if (!PlanetFileControl.seekPlanetName(Planet.formatName(planetName)))
+            {
+                System.out.println("ERROR: No hay un planeta registrado con ese nombre");
+            }
+        }while(!PlanetFileControl.seekPlanetName(Planet.formatName(planetName)));
+        
+        int diameter= insertUnsignedInt("Introduce su diametro");
+        int planetDistance=insertUnsignedInt("Introduce la distancia al planeta");
+        
+        return new Satellite(name, planetName, diameter, planetDistance);
+    }
+       
+    public static int selectSatellite()
+    {
+        int userAns=0;
+        
+        do{
+            userAns=Keyboard.getInt(ConsoleColors.GREEN+"Selecciona el satelite");
+            if (userAns<1||userAns>SatelliteFileControl.getSatelliteAmount())
+            {
+                System.out.println(ConsoleColors.RED+"Selecciona una respuesta válida");
+            }
+        }while(userAns<1||userAns>SatelliteFileControl.getSatelliteAmount());
         
         return userAns;
     }

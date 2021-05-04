@@ -25,7 +25,7 @@ public class PlanetFileControl
      * @param planetName nombre del planeta a comprobar.
      * @return TRUE si el planeta ya se encuentra.
      */
-    private static boolean  seekPlanetName(String planetName)
+    public static boolean seekPlanetName(String planetName)
     {
         boolean found = false;
         String checkName;
@@ -255,7 +255,6 @@ public class PlanetFileControl
         {
             System.out.println("No se ha leer encontrar el archivo" + ex);
         }
-        
     }
     //===================WRITE===================
     
@@ -265,15 +264,16 @@ public class PlanetFileControl
      */
     public static void writePlanet(Planet planet)
     {
+        File file = new File(PATH);
+        int planetAmount = getPlanetAmount();
         try {
             if (!seekPlanetName(planet.getFormattedName()))
             {
             RandomAccessFile raf = new RandomAccessFile(PATH, "rw");
-            raf.seek(Planet.planetCount*Planet.size());
+            raf.seek(planetAmount*Planet.size());
             raf.write(planet.getFormattedName().getBytes(Charset.defaultCharset()));
             raf.writeInt(planet.getDiameter());
             raf.writeFloat(planet.getSunDistance());
-            Planet.planetCount++;
             raf.close();
             }
             else

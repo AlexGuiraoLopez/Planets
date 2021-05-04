@@ -8,7 +8,6 @@ public class Planet
     public final static int NAME_MAX_LENGTH=10;
     public final static int MAX_SATELLITE=10;
     
-    public static int planetCount;
     private String name;
     private int diameter;
     private File imgFile;
@@ -36,7 +35,7 @@ public class Planet
         return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES ;
     }
     
-    private String nameFormat()
+    public static String nameFormat()
     {
         return "%-"+NAME_MAX_LENGTH+"."+NAME_MAX_LENGTH+"s";
     }
@@ -44,6 +43,16 @@ public class Planet
     public String getFormattedName()
     {
         return String.format(nameFormat(), name);
+    }
+    
+    /**
+     * Formatea el nombre de un planeta al formato del campo en el archivo binario.
+     * @param nameToFormat nombre a formatear.
+     * @return nombre formateado.
+     */
+    public static String formatName(String nameToFormat)
+    {
+        return String.format(nameFormat(),nameToFormat);
     }
 
     public int getDiameter() {

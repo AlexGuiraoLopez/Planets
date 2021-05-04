@@ -35,7 +35,7 @@ public class HtmlFileControl
         {
             try {
                 planetFile= new RandomAccessFile(file, "r");
-                bf = new BufferedWriter(new FileWriter("htmlFiles/"+planet.getFormattedName().trim()+".html"));
+                bf = new BufferedWriter(new FileWriter("htmlfiles/"+planet.getFormattedName().trim()+".html"));
                 writeDocType(bf);
                 
                 openHtmlTag(bf);
@@ -133,8 +133,8 @@ public class HtmlFileControl
         
         //String planetFilePath = "C:\\Users\\Aresu\\Desktop\\Aresu\\DAM\\M03Programacion\\Projects\\Retos\\Planets\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
         //String webBrowserPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-        //String planetFilePath = "C:\\Users\\nexus\\Documents\\Estudios\\DAM\\M03Programacion\\Projects\\Retos\\Planetas\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
-        String planetFilePath = "D:\\DAM\\M03Programacion\\Projects\\Retos\\Planets\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
+        String planetFilePath = "C:\\Users\\nexus\\Documents\\Estudios\\DAM\\M03Programacion\\Projects\\Retos\\Planetas\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
+        //String planetFilePath = "D:\\DAM\\M03Programacion\\Projects\\Retos\\Planets\\Planets\\htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html";
         String webBrowserPath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
         
         Runtime r= Runtime.getRuntime();

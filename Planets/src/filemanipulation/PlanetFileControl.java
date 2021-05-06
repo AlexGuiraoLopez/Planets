@@ -312,10 +312,9 @@ public class PlanetFileControl
      * Actualiza la lista de posiciones de satélites para un planeta.
      * @param planetName nombre del planeta
      */
-    public static void updateSatellitePosList(String planetName)
+    public static void updateSatellitePosList(String planetName, int satelliteListPosition)
     {
         int planetPosition = getPlanetPosition(planetName);
-        int satelliteListPosition;
         int satelliteListValue;
         int pointer; //Puntero para desplazar por el archivo.
         int i=0;
@@ -333,10 +332,10 @@ public class PlanetFileControl
                 {
                     pointer-=Integer.BYTES;
                     raf.seek(pointer);
-                    raf.writeInt(planetPosition);
+                    raf.writeInt(satelliteListPosition);
                 }
                 i++;
-            }while(satelliteListValue!=-1||i<Planet.MAX_SATELLITE);
+            }while(satelliteListValue!=-1&&i<Planet.MAX_SATELLITE);
             
             //TRABAJAR AQUI
             

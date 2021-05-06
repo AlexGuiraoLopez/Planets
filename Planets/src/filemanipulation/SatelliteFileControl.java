@@ -215,7 +215,7 @@ public class SatelliteFileControl
                 
                 while(satellitePosList[pos]!=-1)
                 {
-                    raf.seek(pos*Satellite.size());
+                    raf.seek(satellitePosList[pos]*Satellite.size());
                     bName=new byte[Satellite.NAME_MAX_LENGTH];  
                     raf.read(bName);
                     satelliteNames+= new String(bName).trim()+"\n";
@@ -263,7 +263,7 @@ public class SatelliteFileControl
             raf.close();
             
             //IMPORTANTE => Actualiza la lista de posiciones de satelites en los planetas.
-            PlanetFileControl.updateSatellitePosList(satellite.getFormattedPlanetName()); 
+            PlanetFileControl.updateSatellitePosList(satellite.getFormattedPlanetName(),satelliteAmount); 
             }
             else
             {

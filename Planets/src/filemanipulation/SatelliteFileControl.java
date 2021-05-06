@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import visualfront.ConsoleColors;
 
 /** 
@@ -69,21 +71,21 @@ public class SatelliteFileControl
      */
     public static int getSatelliteAmount()
     {
-        int planetAmount=0;
+        int satelliteAmount=0;
         File file = new File(PATH);
       
         if (file.exists())
         {
-            planetAmount= (int)file.length()/Planet.size();
+            satelliteAmount= (int)file.length()/Satellite.size();
         }
-        return planetAmount;
+        return satelliteAmount;
     }
     
     /**
-     * Guarda la lista de nombres para los planetas del archivo.
-     * @return lista con los nombres de los planetas en formato vertical y numerado.
+     * Guarda la lista de nombres para los satelites del archivo.
+     * @return lista con los nombres de los satelites en formato vertical y numerado.
      */
-    public static ArrayList<Satellite> readSatelliteList()
+    public static ArrayList<Satellite> getSatelliteList()
     {
         ArrayList<Satellite> satelliteList = new ArrayList();
         File file = new File (PATH);
@@ -127,7 +129,7 @@ public class SatelliteFileControl
      * Guarda la lista de nombres para los satelites del archivo.
      * @return lista con los nombres de los satelites en formato vertical y numerado.
      */
-    public static ArrayList<String> readSatelliteNameList()
+    public static ArrayList<String> getSatelliteNameList()
     {
         ArrayList<String> nameList = new ArrayList();
         File file = new File (PATH);
@@ -156,22 +158,28 @@ public class SatelliteFileControl
         return nameList;
     }
     
-      public static void readSatelliteInfo(int planetPosition) 
+    /**
+     * Obtiene la información de un satelite especifico según su posición.
+     * @param satellitePosition posición del satelite (basada en el orden de registro en el archivo binario)
+     * @return información del satelite.
+     */
+    public static String getSatelliteInfo(int satellitePosition) 
     {
         RandomAccessFile raf;
         byte [] bName;
         String name;
         String planetName;
+        String info="";
         int diameter;
         int planetDistance;
         
         try {
             raf = new RandomAccessFile(PATH,"r");
-            raf.seek(planetPosition);
+            raf.seek(satellitePosition*Satellite.size());
             bName=new byte[Satellite.NAME_MAX_LENGTH];  
             raf.read(bName);
             name= new String(bName).trim();
-            bName=new byte[Satellite.NAME_MAX_LENGTH]; 
+            bName=new byte[Planet.NAME_MAX_LENGTH]; 
             raf.read(bName);
             planetName= new String(bName).trim();
             
@@ -179,10 +187,8 @@ public class SatelliteFileControl
             planetDistance=raf.readInt();
             raf.close();
             
-            System.out.println("Nombre: " + name);
-            System.out.println("Nombre del planeta: " + planetName);
-            System.out.println("Diametro: " + diameter);
-            System.out.println("Distancia al planeta: " + planetDistance);
+            info="Nombre: " + name+"\n"+"Nombre del planeta: " + planetName+"\n"+"Diametro: " + diameter+"\n"+
+                    "Distancia al planeta: " + planetDistance;
         }
         catch (FileNotFoundException ex) 
         {
@@ -192,6 +198,49 @@ public class SatelliteFileControl
         {
             System.out.println("No se ha leer encontrar el archivo" + ex);
         }
+        return info;
+    }
+    
+    public static String getSatelliteNames(int[] satellitePosList)
+    {
+        String satelliteNames="";
+        File file = new File(PATH);
+        int pos=0;
+        byte [] bName;
+        
+        try {
+            if (file.exists())
+            {
+                RandomAccessFile raf = new RandomAccessFile(file, "r");
+                
+                while(satellitePosList[pos]!=-1)
+                {
+                    raf.seek(pos*Satellite.size());
+                    bName=new byte[Satellite.NAME_MAX_LENGTH];  
+                    raf.read(bName);
+                    satelliteNames+= new String(bName).trim()+"\n";
+                    pos++;
+                }
+
+                raf.close();
+            }
+        }
+        catch (FileNotFoundException ex) 
+        {
+            System.out.println("No se ha podido encontrar el archivo" + ex);
+        }
+        catch (IOException ex) 
+        {
+            System.out.println("No se ha leer encontrar el archivo" + ex);
+        }
+        
+        if (satelliteNames.equals(""))
+        {
+            satelliteNames="Lista de satelites vacía";
+        }
+        
+        
+        return satelliteNames; 
     }
     //=======================WRITE============================
     /**
@@ -201,17 +250,20 @@ public class SatelliteFileControl
     public static void writeSatellite(Satellite satellite)
     {
         File file = new File(PATH);
-        int planetAmount = getSatelliteAmount();
+        int satelliteAmount = getSatelliteAmount();
         try {
             if (!seekSatelliteName(satellite.getFormattedName()))
             {
             RandomAccessFile raf = new RandomAccessFile(PATH, "rw");
-            raf.seek(planetAmount*Planet.size());
+            raf.seek(satelliteAmount*Satellite.size());
             raf.write(satellite.getFormattedName().getBytes(Charset.defaultCharset()));
             raf.write(satellite.getFormattedPlanetName().getBytes(Charset.defaultCharset()));
             raf.writeInt(satellite.getDiameter());
             raf.writeInt(satellite.getPlanetDistance());
             raf.close();
+            
+            //IMPORTANTE => Actualiza la lista de posiciones de satelites en los planetas.
+            PlanetFileControl.updateSatellitePosList(satellite.getFormattedPlanetName()); 
             }
             else
             {

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import visualfront.ConsoleColors;
 
 /** 
@@ -225,27 +227,37 @@ public class PlanetFileControl
         return planetAmount;
     }
     
-    public static void readPlanetInfo(int planetPosition) 
+    /**
+     * Obtiene la información de un planeta a partir de su posición en el archivo.
+     * @param planetPosition posición del planeta
+     * @return Cadena de texto con la información del planeta (en formato vertical).
+     */
+    public static String getPlanetInfo(int planetPosition) 
     {
         RandomAccessFile raf;
         byte [] bName;
         String name;
         int diameter;
         float sunDistance;
-        
+        int [] satellitePosList = new int[Planet.MAX_SATELLITE];
+        String info=null;
         try {
             raf = new RandomAccessFile(PATH,"r");
-            raf.seek(planetPosition);
+            raf.seek(planetPosition*Planet.size());
             bName=new byte[Planet.NAME_MAX_LENGTH]; //ERROR EN OPCION 3 
             raf.read(bName);
             name= new String(bName).trim();
             diameter=raf.readInt();
             sunDistance=raf.readFloat();
+            
+            for (int i = 0; i<satellitePosList.length;i++)
+            {
+                satellitePosList[i]=raf.readInt();
+            }
             raf.close();
             
-            System.out.println("Nombre: " + name);
-            System.out.println("Diametro: " + diameter);
-            System.out.println("Distancia al sol: " + sunDistance);
+            info=("Nombre: " + name+"\n"+"Diametro: " + diameter+"\n"+"Distancia al sol: " + sunDistance+"\n"+
+                    "- Satélites -"+"\n"+SatelliteFileControl.getSatelliteNames(satellitePosList));
         }
         catch (FileNotFoundException ex) 
         {
@@ -255,10 +267,12 @@ public class PlanetFileControl
         {
             System.out.println("No se ha leer encontrar el archivo" + ex);
         }
+        
+        return info;
     }
     //===================WRITE===================
     
-        /**
+    /**
      * Escribe la información de un planeta en el archivo.
      * @param planet planeta que se va a registrar.
      */
@@ -294,8 +308,50 @@ public class PlanetFileControl
         }
     }
     
-    
-    
-    
-    
+    /**
+     * Actualiza la lista de posiciones de satélites para un planeta.
+     * @param planetName nombre del planeta
+     */
+    public static void updateSatellitePosList(String planetName)
+    {
+        int planetPosition = getPlanetPosition(planetName);
+        int satelliteListPosition;
+        int satelliteListValue;
+        int pointer; //Puntero para desplazar por el archivo.
+        int i=0;
+        try {
+            RandomAccessFile raf = new RandomAccessFile (PATH,"rw");
+            pointer=planetPosition*Planet.size()+Planet.satelliteListStartIndex();
+            raf.seek(pointer);
+            
+            do
+            {
+                satelliteListValue=raf.readInt();
+                pointer+=Integer.BYTES;
+                
+                if (satelliteListValue==-1)
+                {
+                    pointer-=Integer.BYTES;
+                    raf.seek(pointer);
+                    raf.writeInt(planetPosition);
+                }
+                i++;
+            }while(satelliteListValue!=-1||i<Planet.MAX_SATELLITE);
+            
+            //TRABAJAR AQUI
+            
+            
+            
+            raf.close();
+        }
+        catch (FileNotFoundException ex) 
+        {
+            System.out.println("No se ha podido encontrar el archivo");
+        }
+        catch (IOException ex) 
+        {
+            System.out.println("No se ha podido acceder al archivo");
+        }
+        
+    }
 }

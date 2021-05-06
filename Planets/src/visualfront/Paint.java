@@ -15,6 +15,6 @@ public class Paint
     
      public static void breakLine()
     {
-        System.out.println("====================");
+        System.out.println("=========================");
     }
 }

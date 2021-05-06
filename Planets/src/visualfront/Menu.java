@@ -1,6 +1,5 @@
 package visualfront;
 
-import java.util.ArrayList;
 
 /**
  * @author Alex Guirao López <aguiraol2021@cepnet.net>
@@ -26,6 +25,7 @@ public class Menu
         {
             System.out.println("  "+menuOptions[i]);  //Opciones del menú
         }
+        Paint.breakLine();
         System.out.print("Introduce una opcion: ");
     }
 }

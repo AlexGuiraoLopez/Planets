@@ -43,9 +43,9 @@ public class HtmlFileControl
                     openBodyTag(bf);
                     
                         openArticleTag(bf, "objectInfo");
-                        
-                            writeImg(bf, planet);
                             writeH1(bf, planet);
+                            writeImg(bf, planet);
+                           
                         closeArticleTag(bf);
                         
                     closeBodyTag(bf);
@@ -133,8 +133,8 @@ public class HtmlFileControl
         File file = new File("htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html");
         String absolutePath= file.getAbsolutePath();
         
-        String webBrowserPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-        //String webBrowserPath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+        //String webBrowserPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+        String webBrowserPath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
         
         Runtime r= Runtime.getRuntime();
         Process p=null;

@@ -59,9 +59,9 @@ public class User
     
     public static Planet createPlanet()
     {
-        String name = insertText(Planet.NAME_MAX_LENGTH, "Introduce el nombre del planeta");
-        int diameter= insertUnsignedInt("Introduce su diametro");
-        float sunDistance=insertUnsignedFloat("Introduce la distancia al sol");
+        String name = insertText(Planet.NAME_MAX_LENGTH, "> Introduce el nombre del planeta");
+        int diameter= insertUnsignedInt("> Introduce su diametro");
+        float sunDistance=insertUnsignedFloat("> Introduce la distancia al sol");
         
         return new Planet(name, diameter, sunDistance);
     }
@@ -83,18 +83,18 @@ public class User
       
        public static Satellite createSatellite()
     {
-        String name = insertText(Satellite.NAME_MAX_LENGTH, "Introduce el nombre del satélite:");
+        String name = insertText(Satellite.NAME_MAX_LENGTH, "> Introduce el nombre del satélite:");
         String planetName;
         do{
-            planetName=insertText(Planet.NAME_MAX_LENGTH,"Introduce el nombre del planeta al que orbita:");
+            planetName=insertText(Planet.NAME_MAX_LENGTH,"> Introduce el nombre del planeta al que orbita:");
             if (!PlanetFileControl.seekPlanetName(Planet.formatName(planetName)))
             {
                 System.out.println(ConsoleColors.RED+"ERROR: No hay un planeta registrado con ese nombre");
             }
         }while(!PlanetFileControl.seekPlanetName(Planet.formatName(planetName)));
         
-        int diameter= insertUnsignedInt("Introduce su diametro:");
-        int planetDistance=insertUnsignedInt("Introduce la distancia al planeta:");
+        int diameter= insertUnsignedInt(">Introduce su diametro:");
+        int planetDistance=insertUnsignedInt(">Introduce la distancia al planeta:");
         
         return new Satellite(name, planetName, diameter, planetDistance);
     }

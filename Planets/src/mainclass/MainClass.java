@@ -19,14 +19,14 @@ import visualfront.Paint;
 //Alt + shift + m => Comando para encapsular metodos.
 public class MainClass 
 {
-    final static String [] mainMenuLines = new String [] {"- Bienvenido -",
-                                                            "1-Introducir planeta",
-                                                                "2-Introducir satelite",
-                                                                    "3-Mostrar planeta",
-                                                                        "4-Mostrar satelite",
-                                                                            "5-Generar HTML",
-                                                                                "6-Ejecutar web",
-                                                                                    "0-Salir"};
+    final static String [] mainMenuLines = new String [] {" --- Menú principal ---",
+                                                            ConsoleColors.BLUE+"1-Introducir planeta",
+                                                                ConsoleColors.PURPLE+"2-Introducir satelite",
+                                                                   ConsoleColors.BLUE+ "3-Mostrar planeta",
+                                                                        ConsoleColors.PURPLE+"4-Mostrar satelite",
+                                                                            ConsoleColors.YELLOW+"5-Generar HTML",
+                                                                                ConsoleColors.YELLOW+"6-Ejecutar web",
+                                                                                    ConsoleColors.RED+"0-Salir"};
     public static void main(String[] args) 
     {
         int userAns;
@@ -38,10 +38,12 @@ public class MainClass
             switch(userAns)
             {
                 case 1: //Introducir planeta. 
+                    System.out.println(ConsoleColors.BLUE+"    --Introducir planeta--");
                     Planet planet = User.createPlanet();
                     PlanetFileControl.writePlanet(planet);
                     break;
                 case 2: //Introducir satélite. 
+                    System.out.println(ConsoleColors.PURPLE+"   --Introducir satélite--");
                     Satellite satellite = User.createSatellite();
                     SatelliteFileControl.writeSatellite(satellite);
                     break;
@@ -51,6 +53,7 @@ public class MainClass
                     {
                         System.out.println(PlanetFileControl.getPlanetInfo(User.selectPlanet()-1));
                     }
+                    Time.waitForSeconds(750);
                     break;
                 case 4: //Mostrar satélite.
                     showSatelliteNames();
@@ -58,6 +61,7 @@ public class MainClass
                     {
                         System.out.println(SatelliteFileControl.getSatelliteInfo(User.selectSatellite()-1));
                     }
+                    Time.waitForSeconds(750);
                     break;
                 case 5: //Generar HTML.
                     showPlanetNames();
@@ -68,10 +72,15 @@ public class MainClass
                 break;
                 case 6: //Ejecutar HTML.
                     showPlanetNames();
+                    if (PlanetFileControl.getPlanetAmount()>0)
+                    {
                     HtmlFileControl.executeFile(User.selectPlanet()-1);
+                    }
             }
             Paint.breakLine();
         }while(userAns!=0);
+        System.out.println("¡No olvides que tus datos han sido registrados!");
+        System.out.println("Vuelve a acceder cuando te apetezca ;)");
     }
     
     public static void showPlanetNames()

@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import visualfront.ConsoleColors;
 
 /** 
@@ -244,7 +242,7 @@ public class PlanetFileControl
         try {
             raf = new RandomAccessFile(PATH,"r");
             raf.seek(planetPosition*Planet.size());
-            bName=new byte[Planet.NAME_MAX_LENGTH]; //ERROR EN OPCION 3 
+            bName=new byte[Planet.NAME_MAX_LENGTH];
             raf.read(bName);
             name= new String(bName).trim();
             diameter=raf.readInt();
@@ -257,7 +255,7 @@ public class PlanetFileControl
             raf.close();
             
             info=("Nombre: " + name+"\n"+"Diametro: " + diameter+"\n"+"Distancia al sol: " + sunDistance+"\n"+
-                    "- Satélites -"+"\n"+SatelliteFileControl.getSatelliteNames(satellitePosList));
+                    "    - Satélites -"+"\n"+SatelliteFileControl.getSatelliteNames(satellitePosList));
         }
         catch (FileNotFoundException ex) 
         {

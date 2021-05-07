@@ -1,6 +1,7 @@
 package filemanipulation;
 
 import elements.Planet;
+import elements.Satellite;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,6 +17,7 @@ public class HtmlFileControl
 {
     /**
      * 
+     * @return número de ficheros que hay en el directorio.
      */
     public static int HTMLFileAmount()
     {
@@ -29,12 +31,15 @@ public class HtmlFileControl
         RandomAccessFile planetFile; 
         BufferedWriter bf;
         Planet planet = PlanetFileControl.readPlanetList().get(planetPosition);
-        
+        String planetName=planet.getFormattedName().trim().toUpperCase();
         if (file.exists())
         {
             try {
                 planetFile= new RandomAccessFile(file, "r");
-                bf = new BufferedWriter(new FileWriter("htmlfiles/"+planet.getFormattedName().trim()+".html"));
+                FileWriter fw = new FileWriter("htmlfiles/"+planet.getFormattedName().trim()+".html");
+                bf = new BufferedWriter(fw);
+                
+                //Escritura del archivo linea a linea.
                 writeDocType(bf);
                 
                 openHtmlTag(bf);
@@ -42,29 +47,49 @@ public class HtmlFileControl
                     openBodyTag(bf);
                     
                         openArticleTag(bf, "objectInfo");
-                            writeH1(bf, planet);
+                            writeH1(bf, planetName);
                             writeImg(bf, planet);
-                           
+                            writeH3(bf, planetName);
+                            writeH3(bf, planetName);
+                            writeH2(bf, "Satélites");
+                            
+                            openTableTag(bf);
+                          
+                        for (int i = 0;i<noseke;i++)
+                        {                         
+                            openTrTag(bf);
+                                writeTdTag(bf, getImagePath(planetName));
+                                writeTdTag(bf, satelliteInfo);
+                                writeTdTag(bf, satelliteInfo);
+                            closeTrTag(bf);
+                          }
+                        
+                          closeTableTag(bf);
+                          
                         closeArticleTag(bf);
                         
                     closeBodyTag(bf);
                 closeHtmlTag(bf);
                     
                 
-                
                 planetFile.close();
+                
                 bf.close();
+                fw.close();
                 System.out.println(ConsoleColors.GREEN+"Archivo HTML generado correctamente.");
                
             } 
             catch (FileNotFoundException ex) 
             {
                 System.out.println("No se ha podido encontrar el archivo"+ ex);
+                ex.printStackTrace();
             }
             catch (IOException ex) 
             {
                 System.out.println("No se ha podido acceder al archivo"+ ex);
+                ex.printStackTrace();
             }   
+            
         }
     }
     
@@ -115,15 +140,55 @@ public class HtmlFileControl
     {
         bf.write("</article>"+"\n");
     }
-    
-    private static void writeH1(BufferedWriter bf, Planet planet) throws IOException
+  
+    private static void writeH1(BufferedWriter bf, String planetName) throws IOException
     {
-        bf.write("<h1>"+planet.getFormattedName().trim().toUpperCase()+"</h1>"+"\n");
+        bf.write("<h1>"+planetName+"</h1>"+"\n");
+    }
+    
+    private static void writeH2(BufferedWriter bf, String planetInfo) throws IOException
+    {
+        bf.write("<h2>"+planetInfo+"</h2>"+"\n");
+    }
+    
+    private static void writeH3(BufferedWriter bf, String planetInfo) throws IOException
+    {
+        bf.write("<h3>"+planetInfo+"</h3>"+"\n");
+    }
+    
+      private static void openTableTag(BufferedWriter bf) throws IOException
+    {
+        bf.write("<table>"+"\n");
+    }
+    
+    private static void closeTableTag(BufferedWriter bf) throws IOException
+    {
+        bf.write("</table>"+"\n");
+    }
+    
+      private static void openTrTag(BufferedWriter bf) throws IOException
+    {
+        bf.write("<tr>"+"\n");
+    }
+    
+    private static void writeTdTag(BufferedWriter bf, String satelliteInfo) throws IOException
+    {
+        bf.write("<td>"+satelliteInfo+"</td>"+"\n");
+    }
+    
+    private static void closeTrTag(BufferedWriter bf) throws IOException
+    {
+        bf.write("</tr>"+"\n");
     }
     
     private static void writeImg(BufferedWriter bf, Planet planet) throws IOException
     {
         bf.write("<img src=\"../img/"+planet.getFormattedName().trim()+".png"+"\" alt=\""+planet.getFormattedName().trim()+"Image"+"\""+">"+"\n");
+    }
+    
+    private static String getImagePath(String planetName) throws IOException
+    {
+        return "<img src=\"../img/"+planetName+".png"+"\" alt=\""+planetName+"Image"+"\""+">"+"\n";
     }
     
     //=====================EXECUTION============================

@@ -92,6 +92,7 @@ public class MainClass
         }else{
             ArrayList<String> planetNameList=PlanetFileControl.readPlanetNameList();
             int pos=1;
+            
             for (String s:planetNameList)
             {
                 System.out.println(pos+"- "+s);

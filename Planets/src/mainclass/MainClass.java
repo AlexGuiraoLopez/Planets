@@ -8,6 +8,7 @@ import filemanipulation.SatelliteFileControl;
 import input.Keyboard;
 import java.io.File;
 import java.util.ArrayList;
+import sound.Sound;
 import time.Time;
 import user.User;
 import visualfront.ConsoleColors;
@@ -37,6 +38,7 @@ public class MainClass
      */
     public static void main(String[] args) 
     {
+        Sound.startAudio();
         Paint.drawMainImage(); //(0.) Dibuja la imagen de presentación.
         Menu mainMenu = new Menu(mainMenuLines);
         int userAns;

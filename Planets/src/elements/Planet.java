@@ -1,5 +1,4 @@
 package elements;
-import java.io.File;
 /**
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
@@ -10,9 +9,9 @@ public class Planet
     
     private String name;
     private int diameter;
-    private File imgFile;
     private float sunDistance;
     private int[] satellitePosList = new int[MAX_SATELLITE];
+    private int hasWeb;
 
     public Planet(String name,int diameter, float sunDistance) 
     {
@@ -20,16 +19,14 @@ public class Planet
         this.diameter = diameter;
         this.sunDistance = sunDistance;
         resetSatelliteList(); //Fija el valor de las posiciones a -1 para indicar espacios vacíos.
+        this.hasWeb=0;
     }
-    
-    private File getImageFile()
-    {
-        return new File(this.name+".png");
-    }
+
     
     /**
-     * Resetea la lista de satélites para que todas sus posiciones sean el valor por defecto -1
+     * Resetea la lista de satélites para que todas sus posiciones sean el valor por defecto -1.
      * Ese valor indica que no hay satélites en dicha posición.
+     * De este modo evito posibles futuros errores si lee varios 0 como índices por defecto.
      */
     private void resetSatelliteList()
     {
@@ -45,7 +42,7 @@ public class Planet
      */
     public static int size()
     {
-        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES+Integer.BYTES*MAX_SATELLITE;
+        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES+Integer.BYTES*MAX_SATELLITE+Integer.BYTES;
     }
     
     /**
@@ -57,18 +54,33 @@ public class Planet
         return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES;
     }
     
+     /**
+     * Tamaño de los campos anteriores al check de web para posicionar el puntero en ese punto.
+     * @return tamaño de los registros anteriores al check de web.
+     */
+    public static int hasWebStartIndex()
+    {
+        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES+Integer.BYTES;
+    }
+    
+    /**
+     * @return Formato del nombre de los planetas.
+     */
     public static String nameFormat()
     {
         return "%-"+NAME_MAX_LENGTH+"."+NAME_MAX_LENGTH+"s";
     }
     
+    /**
+     * @return Nombre formateado. 
+     */
     public String getFormattedName()
     {
         return String.format(nameFormat(), name);
     }
     
     /**
-     * Formatea el nombre de un planeta al formato del campo en el archivo binario.
+     * Formatea el nombre de un planeta en el archivo binario.
      * @param nameToFormat nombre a formatear.
      * @return nombre formateado.
      */
@@ -77,6 +89,8 @@ public class Planet
         return String.format(nameFormat(),nameToFormat);
     }
 
+    
+    //######### GET & SET#########
     public int getDiameter() {
         return diameter;
     }

@@ -1,11 +1,4 @@
 package elements;
-/**
- * Permetrà introduir les dades d’un satèl·lit. Demanarà a l’usuari el nom del satèl·lit, 
- * el nom del planeta al que orbita, el diàmetre i la distància al planeta (tots dos en km)
- * i guardarà el satèl·lit a l’arxiu satellites.bin. Cas que a l’arxiu ja hi hagi un satèl·lit 
- * amb el nom introduït o bé que el planeta no estigui a l’arxiu planetes.bin, 
- * el programa no guardarà el satèl·lit i tornarà al menú principal
- */
 /** 
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
@@ -27,20 +20,20 @@ public class Satellite
         this.planetName = planetName;
     }
     
-    
     public static int size()
     {
         return NAME_MAX_LENGTH + Integer.BYTES+Integer.BYTES+NAME_MAX_LENGTH;
     }
     
-    public static String nameFormat()
+      //######### GET & SET#########
+     public static String getNameFormat()
     {
         return "%-"+NAME_MAX_LENGTH+"."+NAME_MAX_LENGTH+"s";
     }
     
     public String getFormattedName()
     {
-        return String.format(nameFormat(), name);
+        return String.format(getNameFormat(), name);
     }
     
     public String getFormattedPlanetName()

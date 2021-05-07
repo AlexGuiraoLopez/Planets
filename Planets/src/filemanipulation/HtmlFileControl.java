@@ -16,12 +16,11 @@ public class HtmlFileControl
 {
     /**
      * 
-     * @param planetPosition 
      */
     public static int HTMLFileAmount()
     {
-        //Cómo puedo saber cuántos archivos hay en una carpeta?
-        return 1; //Provisional
+        File file = new File("htmlfiles/");
+        return file.listFiles().length;  //Devuelve un array con el número de archivos que hay en el directorio.
     }
     
     public static void generateHTMLFile(int planetPosition)
@@ -35,7 +34,7 @@ public class HtmlFileControl
         {
             try {
                 planetFile= new RandomAccessFile(file, "r");
-                bf = new BufferedWriter(new FileWriter("htmlFiles/"+planet.getFormattedName().trim()+".html"));
+                bf = new BufferedWriter(new FileWriter("htmlfiles/"+planet.getFormattedName().trim()+".html"));
                 writeDocType(bf);
                 
                 openHtmlTag(bf);

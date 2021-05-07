@@ -72,9 +72,11 @@ public class MainClass
                 break;
                 case 6: //Ejecutar HTML.
                     showPlanetNames();
-                    if (PlanetFileControl.getPlanetAmount()>0)
+                    if (HtmlFileControl.getHTMLFileAmount()>0)
                     {
                     HtmlFileControl.executeFile(User.selectPlanet()-1);
+                    }else{
+                        System.out.println(ConsoleColors.RED+"No hay archivos para ejecutar.");
                     }
             }
             Paint.breakLine();

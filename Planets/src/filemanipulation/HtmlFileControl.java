@@ -19,7 +19,7 @@ public class HtmlFileControl
      * 
      * @return número de ficheros que hay en el directorio.
      */
-    public static int HTMLFileAmount()
+    public static int getHTMLFileAmount()
     {
         File file = new File("htmlfiles/");
         return file.listFiles().length;  //Devuelve un array con el número de archivos que hay en el directorio.
@@ -54,7 +54,7 @@ public class HtmlFileControl
                             writeH2(bf, "Satélites");
                             
                             openTableTag(bf);
-                          
+                          /*
                         for (int i = 0;i<noseke;i++)
                         {                         
                             openTrTag(bf);
@@ -63,7 +63,7 @@ public class HtmlFileControl
                                 writeTdTag(bf, satelliteInfo);
                             closeTrTag(bf);
                           }
-                        
+                        */
                           closeTableTag(bf);
                           
                         closeArticleTag(bf);
@@ -204,7 +204,8 @@ public class HtmlFileControl
         Process p=null;
         
         try {
-          p=r.exec(webBrowserPath+" "+absolutePath);
+            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + absolutePath);
+            //p=r.exec(webBrowserPath+" "+absolutePath);
         } 
         catch (IOException ex) 
         {

@@ -27,7 +27,7 @@ public class HtmlFileControl
     
     public static void generateHTMLFile(int planetPosition)
     {
-        File file = new File(PlanetFileControl.getPath());
+        File file = new File(PlanetFileControl.PATH);
         RandomAccessFile planetFile; 
         BufferedWriter bf;
         Planet planet = PlanetFileControl.readPlanetList().get(planetPosition);

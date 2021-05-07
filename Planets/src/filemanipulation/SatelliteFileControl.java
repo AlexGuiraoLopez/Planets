@@ -17,7 +17,7 @@ import visualfront.ConsoleColors;
  */
 public class SatelliteFileControl 
 {
-    final static String PATH="datafiles/satellites.bin";
+    public final static String PATH="datafiles/satellites.bin";
     
     //=======================READ============================
     /**

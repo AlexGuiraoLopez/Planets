@@ -13,12 +13,8 @@ import visualfront.ConsoleColors;
  */
 public class PlanetFileControl 
 {
-    final private static String PATH="datafiles/planets.bin";
+    public final static String PATH="datafiles/planets.bin";
     
-    public static String getPath()
-    {
-        return PATH;
-    } 
      //===================READ===================
     /**
      * Busca el nombre de un planeta en un archivo y comprueba si ya existe.

@@ -22,10 +22,10 @@ import visualfront.Paint;
 //Alt + shift + m => Comando para encapsular metodos.
 public class MainClass 
 {
-    final static String [] mainMenuLines = new String [] {" --- Menú principal ---",
-                                                            ConsoleColors.BLUE+"1-Introducir planeta",
+    final static String [] MAIN_MENU_LINES = new String [] {" --- Menú principal ---",
+                                                            ConsoleColors.CYAN+"1-Introducir planeta",
                                                                 ConsoleColors.PURPLE+"2-Introducir satelite",
-                                                                   ConsoleColors.BLUE+ "3-Mostrar planeta",
+                                                                   ConsoleColors.CYAN+ "3-Mostrar planeta",
                                                                         ConsoleColors.PURPLE+"4-Mostrar satelite",
                                                                             ConsoleColors.YELLOW+"5-Generar HTML",
                                                                                 ConsoleColors.YELLOW+"6-Ejecutar web",
@@ -41,7 +41,7 @@ public class MainClass
     {
         Sound.startAudio();
         Paint.drawMainImage(); //(0.) Dibuja la imagen de presentación.
-        Menu mainMenu = new Menu(mainMenuLines);
+        Menu mainMenu = new Menu(MAIN_MENU_LINES);
         int userAns;
         
         do{
@@ -58,7 +58,7 @@ public class MainClass
                     insertSatellite();
                     break;
                     
-                case 3:     //Mostrar planeta.                  
+                case 3: //Mostrar planeta.                  
                     showPlanet();
                     Time.waitForSeconds(750);
                     break;
@@ -68,27 +68,16 @@ public class MainClass
                     Time.waitForSeconds(750);
                     break;
                     
-                case 5: //Generar HTML.
-                    ArrayList planetList = PlanetFileControl.readPlanetList();
-                    showElementNames(planetList);
-                    if (PlanetFileControl.getPlanetAmount()>0)
-                    {
-                        //(10.) Genera archivo HTML del planeta seleccionado.
-                        HtmlFileControl.generateHTMLFile(User.selectPlanet()-1); 
-                    }
+                case 5: //Generar HTML.     
+                    generateWeb();
+                    Time.waitForSeconds(750);
                 break;
                 
                 case 6: //Ejecutar HTML.
-                    showHtmlFileNames();
-                    if (HtmlFileControl.getHTMLFileAmount()>0)
-                    {
-                    HtmlFileControl.executeFile(User.selectPlanet()-1);
-                    }else{
-                        System.out.println(ConsoleColors.RED+"No hay archivos para ejecutar.");
-                    }
+                   executeWeb();
                     break;
                     
-                case -1:eraseAllInfo(); //(X.) ELIMINA TODA LA INFORMACIÓN
+                case -1:eraseAllInfo(); //ELIMINA TODA LA INFORMACIÓN
                     break;
                     
                 default: System.out.println(ConsoleColors.RED+"Opción errónea");
@@ -103,8 +92,6 @@ public class MainClass
         System.out.println("Vuelve a acceder cuando te apetezca ;)");
     }
 
-
-
     //========================MÉTODOS PRINCIPALES=========================
 
     /**
@@ -113,7 +100,7 @@ public class MainClass
      */
     private static void insertPlanet() 
     {
-        System.out.println(ConsoleColors.BLUE+"    --Introducir planeta--");
+        System.out.println(ConsoleColors.CYAN+"    --Introducir planeta--");
         Planet planet = User.createPlanet(); //(2.) El usuario crea un planeta.
         PlanetFileControl.writePlanet(planet);//(3.) La info del planeta se registra en el fichero.
     }
@@ -173,6 +160,76 @@ public class MainClass
     }
     
     /**
+     * Genera el archivo html de un planeta.
+     * (Opcion 5 del programa)
+     */
+     private static void generateWeb()
+    {
+        ArrayList planetList = PlanetFileControl.readPlanetList();
+        showElementNames(planetList);
+        if (PlanetFileControl.getPlanetAmount()>0)
+        {
+            //(10.) Genera archivo HTML del planeta seleccionado.
+            HtmlFileControl.generateHTMLFile(User.selectPlanet()-1);
+            System.out.println(ConsoleColors.GREEN+"Archivo HTML generado correctamente.");
+        }else{
+            System.out.println(ConsoleColors.RED+"No hay planetas todavía");
+        }
+    }
+     
+     /**
+      * Ejecuta una web.
+      * (Opción 6 del programa)
+      */
+     private static void executeWeb()
+     {
+         File [] file = HtmlFileControl.file.listFiles();
+         
+         if (file.length>0)
+         {
+            int loopIndex=1;
+            int userAns;
+
+            do{
+                for (File f:file)
+               {
+                    System.out.println(loopIndex+"- "+f.getName());
+                    loopIndex++;
+                }
+               userAns=User.insertUnsignedInt("Selecciona un archivo");
+
+               if (userAns>file.length)
+               {
+                   System.out.println(ConsoleColors.RED+"Selecciona un archivo válido...");
+               }
+            }while(userAns>file.length);
+
+            HtmlFileControl.executeFile(userAns);
+            System.out.println(ConsoleColors.GREEN+"Se ha ejecutado el archivo correctamente.");
+         }else{
+             System.out.println(ConsoleColors.RED+"Todavía no existen archivos HTML...");
+         }
+         
+     }
+     
+    /**
+     * Elimina todos los ficheros de datos.
+     * (Opción -1 del programa)
+     */
+    public static void eraseAllInfo()
+    {
+        PlanetFileControl.file.delete();
+        SatelliteFileControl.file.delete();
+        
+        File [] file = HtmlFileControl.file.listFiles();
+        
+        for (File f:file)
+        {
+            f.delete();
+        }
+    }
+    
+       /**
      * Muestra una lista numerada con nombres de algún elemento
      * en el orden de su archivo binario correspondiente.
      * @param elementList lista de elementos a mostrar.
@@ -185,22 +242,6 @@ public class MainClass
         {
             System.out.println(nameIndex+"- "+element.getName());
             nameIndex++;
-        }
-    }
-    
-    /**
-     * Elimina todos los ficheros de datos.
-     */
-    public static void eraseAllInfo()
-    {
-        PlanetFileControl.file.delete();
-        SatelliteFileControl.file.delete();
-        
-        File [] file = HtmlFileControl.file.listFiles();
-        
-        for (File f:file)
-        {
-            f.delete();
         }
     }
 }

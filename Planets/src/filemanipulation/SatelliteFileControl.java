@@ -150,17 +150,21 @@ public class SatelliteFileControl
     }
     
     /**
-     * Traduce una lista de posiciones en los nombres correspondientes de los satélites respecto
-     * al orden de introducción en el archivo binario.
-     * @param satellitePosList lista de posiciones a traducir.
-     * @return nombre de los satélites en la lista.
+     * Obtén una lista de satélites correspondiente a la lista de posiciones para los satélites
+     * que orbitan a un planeta.
+     * @param satellitePosList lista de posiciones a obetener sus satélites.
+     * @return satélites de las posiciones.
      */
-    public static String getSatelliteNames(int[] satellitePosList)
+    public static ArrayList<Satellite> readSatelliteList(int[] satellitePosList)
     {
-        String satelliteNames="";
-        File file = new File(PATH);
+        ArrayList<Satellite>satelliteList= new ArrayList<Satellite>();
+        
         int pos=0;
+        String name;
+        String planetName;
         byte [] bName;
+        int diameter;
+        int planetDistance;
         
         try {
             if (file.exists())
@@ -172,7 +176,18 @@ public class SatelliteFileControl
                     raf.seek(satellitePosList[pos]*Satellite.size());
                     bName=new byte[Satellite.NAME_MAX_LENGTH];  
                     raf.read(bName);
-                    satelliteNames+= new String(bName).trim()+"\n";
+                    name= new String(bName);
+                    
+                    bName=new byte[Satellite.NAME_MAX_LENGTH];  
+                    raf.read(bName);
+                    planetName= new String(bName);
+                    
+                    diameter=raf.readInt();
+                    
+                    planetDistance=raf.readInt();
+                    
+                    satelliteList.add(new Satellite(name, planetName, diameter, planetDistance));
+                    
                     pos++;
                 }
 
@@ -188,13 +203,12 @@ public class SatelliteFileControl
             System.out.println("No se ha leer encontrar el archivo" + ex);
         }
         
-        if (satelliteNames.equals(""))
+        if (satelliteList.isEmpty())
         {
-            satelliteNames="Lista de satelites vacía";
+            System.out.println("No contiene satélites");
         }
         
-        
-        return satelliteNames; 
+        return satelliteList; 
     }
     
     //=======================WRITE============================
@@ -231,6 +245,11 @@ public class SatelliteFileControl
             System.out.println("No se ha podido acceder al archivo");
         }
     }
+    
+    
+//=====================================================================================
+//=====================================================================================
+//=====================================================================================
     
     
     //========================DEPCRECATED============================

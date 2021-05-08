@@ -9,7 +9,6 @@ public class Satellite extends Element
     private String planetName;
     private int planetDistance;
     
-
     public Satellite(String name, String planetName, int diameter, int planetDistance)
     {
         super(name, diameter);
@@ -29,8 +28,8 @@ public class Satellite extends Element
                     "Distancia al planeta: " + planetDistance;
     }
     
-      //######### GET & SET#########
-     public String getName()
+    //######### GET & SET#########
+    public String getName()
     {
         return name;
     }

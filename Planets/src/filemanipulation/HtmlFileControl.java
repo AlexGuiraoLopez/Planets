@@ -1,12 +1,14 @@
 package filemanipulation;
 
 import elements.Planet;
+import elements.Satellite;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import visualfront.ConsoleColors;
 
 /**
@@ -29,7 +31,8 @@ public class HtmlFileControl
     {
         BufferedWriter bf;
         Planet planet = PlanetFileControl.readPlanetList().get(planetPosition);
-        String planetName=planet.getFormattedName().trim().toUpperCase();
+        ArrayList<Satellite> satelliteList = SatelliteFileControl.readSatelliteList(planet.getSatellitePosList());
+        
         if (file.exists())
         {
             try {
@@ -44,23 +47,32 @@ public class HtmlFileControl
                     openBodyTag(bf);
                     
                         openArticleTag(bf, "objectInfo");
-                            writeH1(bf, planetName);
+                            writeH1(bf, planet.getName().toUpperCase());
                             writeImg(bf, planet);
-                            writeH3(bf, planetName);
-                            writeH3(bf, planetName);
+                            writeH3(bf, "Diámetro: "+Integer.toString(planet.getDiameter()));
+                            writeH3(bf,"Distancia al sol: "+Float.toString(planet.getSunDistance()));
                             writeH2(bf, "Satélites");
                             
                             openTableTag(bf);
-                          /*
-                        for (int i = 0;i<noseke;i++)
+                          
+                            
+                            openTrTag(bf);
+                                writeTdTag(bf, "Imagen");
+                                writeTdTag(bf, "Nombre");
+                                writeTdTag(bf,"Diámetro");
+                                writeTdTag(bf, "Distancia a planeta");
+                            closeTrTag(bf);
+                            
+                        for (Satellite s:satelliteList)
                         {                         
                             openTrTag(bf);
-                                writeTdTag(bf, getImagePath(planetName));
-                                writeTdTag(bf, satelliteInfo);
-                                writeTdTag(bf, satelliteInfo);
+                                writeTdTag(bf, "<img class=\"satelliteImg\" src=\"../img/"+s.getFormattedName().trim()+".png"+"\" alt=\""+s.getFormattedName().trim()+"Image"+"\""+">"+"\n");
+                                writeTdTag(bf, s.getName());
+                                writeTdTag(bf, Integer.toString(s.getDiameter()));
+                                writeTdTag(bf, Integer.toString(s.getPlanetDistance()));
                             closeTrTag(bf);
-                          }
-                        */
+                        }
+                        
                           closeTableTag(bf);
                           
                         closeArticleTag(bf);
@@ -70,8 +82,6 @@ public class HtmlFileControl
                     
                 bf.close();
                 fw.close();
-                System.out.println(ConsoleColors.GREEN+"Archivo HTML generado correctamente.");
-               
             } 
             catch (FileNotFoundException ex) 
             {
@@ -186,20 +196,19 @@ public class HtmlFileControl
     }
     
     //=====================EXECUTION============================
-    public static void executeFile(int planetPosition)
+    public static void executeFile(int filePosition)
     {
-        File file = new File("htmlfiles\\"+PlanetFileControl.readPlanetName(planetPosition).toLowerCase()+".html");
-        String absolutePath= file.getAbsolutePath();
+        File [] fileList = new File("htmlfiles\\").listFiles();
+        File fileToExecute = fileList[filePosition-1];
+        
+        String absolutePath= fileToExecute.getAbsolutePath();
         
         //String webBrowserPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-        String webBrowserPath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
         
         Runtime r= Runtime.getRuntime();
-        Process p=null;
         
         try {
-            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + absolutePath);
-            //p=r.exec(webBrowserPath+" "+absolutePath);
+            r.exec("rundll32 url.dll,FileProtocolHandler " + absolutePath);
         } 
         catch (IOException ex) 
         {

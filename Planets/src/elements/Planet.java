@@ -1,6 +1,7 @@
 package elements;
 
 import filemanipulation.SatelliteFileControl;
+import java.util.ArrayList;
 
 /**
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
@@ -29,7 +30,6 @@ public class Planet extends Element
         this.satellitePosList=satellitePosList;
     }
 
-    
     /**
      * Resetea la lista de satélites para que todas sus posiciones sean el valor por defecto -1.
      * Ese valor indica que no hay satélites en dicha posición.
@@ -96,13 +96,31 @@ public class Planet extends Element
         return String.format(nameFormat(),nameToFormat);
     }
 
+    private String getSatellitesName()
+    {
+        String satellitesName="";
+        
+        ArrayList<Satellite> satelliteList=SatelliteFileControl.readSatelliteList(satellitePosList);
+       
+        int i=0;
+        
+        while (satelliteList.get(i)!=null)
+        {
+            satellitesName+=satelliteList.get(i).getName();
+            i++;
+        }
+        
+        return satellitesName;
+    }
+    
     @Override
     public String toString() 
     {
         return "Nombre: " + name+"\n"+"Diametro: " + diameter+"\n"+"Distancia al sol: " + sunDistance+"\n"+
-                    "    - Satélites -"+"\n"+SatelliteFileControl.getSatelliteNames(satellitePosList);
+                    "    - Satélites -"+"\n"+getSatellitesName();
     }
 
+    
     
     //######### GET & SET#########
     public float getSunDistance() {

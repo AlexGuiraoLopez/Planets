@@ -144,7 +144,6 @@ public class PlanetFileControl
         return planetList;
     }
    
- 
 
     //===================WRITE===================
     /**
@@ -226,14 +225,9 @@ public class PlanetFileControl
     }
     
     
-    
-    
-    
-    
 //=====================================================================================
 //=====================================================================================
 //=====================================================================================
-    
     
     //=================DEPRECATED============================
      /**
@@ -351,49 +345,4 @@ public class PlanetFileControl
         return found;
     }
 
- /**
-     * Obtiene la información de un planeta a partir de su posición en el archivo.
-     * @param planetPosition posición del planeta
-     * @return Cadena de texto con la información del planeta (en formato vertical).
-     * @deprecated fué sustituido por el toString() de la propia clase Planet.
-     */
-    public static String getPlanetInfo(int planetPosition) 
-    {
-        RandomAccessFile raf;
-        byte [] bName;
-        String name;
-        int diameter;
-        float sunDistance;
-        int [] satellitePosList = new int[Planet.MAX_SATELLITE];
-        String info=null;
-        try {
-            raf = new RandomAccessFile(PATH,"r");
-            raf.seek(planetPosition*Planet.recordSize());
-            bName=new byte[Planet.NAME_MAX_LENGTH];
-            raf.read(bName);
-            name= new String(bName).trim();
-            diameter=raf.readInt();
-            sunDistance=raf.readFloat();
-            
-            for (int i = 0; i<satellitePosList.length;i++)
-            {
-                satellitePosList[i]=raf.readInt();
-            }
-            raf.close();
-            
-            info=("Nombre: " + name+"\n"+"Diametro: " + diameter+"\n"+"Distancia al sol: " + sunDistance+"\n"+
-                    "    - Satélites -"+"\n"+SatelliteFileControl.getSatelliteNames(satellitePosList));
-        }
-        catch (FileNotFoundException ex) 
-        {
-            System.out.println("No se ha podido encontrar el archivo" + ex);
-        }
-        catch (IOException ex) 
-        {
-            System.out.println("No se ha leer encontrar el archivo" + ex);
-        }
-        
-        return info;
-    }
-   
 }

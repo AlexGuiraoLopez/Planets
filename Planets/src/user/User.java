@@ -4,6 +4,7 @@ import elements.Satellite;
 import filemanipulation.PlanetFileControl;
 import filemanipulation.SatelliteFileControl;
 import input.Keyboard;
+import java.util.InputMismatchException;
 import visualfront.ConsoleColors;
 /**
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
@@ -18,7 +19,7 @@ public class User
             name=Keyboard.readString();
             if (name.length()>maxLength)
             {
-                System.out.println("El tamaño máximo para el nombre es de "+maxLength+" caracteres.");
+                System.out.println(ConsoleColors.RED+"El tamaño máximo para el nombre es de "+maxLength+" caracteres.");
             }
         }while(name.length()>maxLength);
         
@@ -27,15 +28,23 @@ public class User
     
     public static int insertUnsignedInt(String message)
     {
-        int number;
+        int number=0;
         
         do{
             System.out.println(message);
+            try{
             number=Keyboard.readInt();
-            if(number<=0)
-            {
-                System.out.println("El dato debe ser mayor a 0");
+            
+                if(number<=0)
+                {
+                    System.out.println(ConsoleColors.RED+"El dato debe ser mayor a 0");
+                }
             }
+            catch (InputMismatchException ex)
+            {
+                System.out.println(ConsoleColors.RED+"El dato introducido no es un número");
+            }
+            
         }while(number<=0);
         
         return number;
@@ -43,14 +52,20 @@ public class User
     
     public static float insertUnsignedFloat(String message)
     {
-        float number;
+        float number=0;
         
         do{
-            System.out.println(message);
-            number=Keyboard.readFloat();
-            if(number<=0)
+            try{
+                System.out.println(message);
+                number=Keyboard.readFloat();
+                if(number<=0)
+                {
+                    System.out.println(ConsoleColors.RED+"El dato debe ser mayor a 0");
+                }
+            }
+            catch(InputMismatchException ex)
             {
-                System.out.println("El dato debe ser mayor a 0");
+                System.out.println(ConsoleColors.RED+"El dato introducido no es un número");
             }
         }while(number<=0);
         

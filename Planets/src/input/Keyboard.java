@@ -71,7 +71,7 @@ public class Keyboard
 	 * @throws InputMismatchException Quan s'introdueixen caràcters no numèrics
 	 *		   o bé excedeixen la capacitat d'un int
 	 */
-	public static int readInt() 
+	public static int readInt() throws InputMismatchException
 	{
 		return new Scanner(System.in).nextInt();
 	}

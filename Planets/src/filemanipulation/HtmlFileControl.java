@@ -48,7 +48,7 @@ public class HtmlFileControl
                     
                         openArticleTag(bf, "objectInfo");
                             writeH1(bf, planet.getName().toUpperCase());
-                            writeImg(bf, planet);
+                            writePlanetImg(bf, planet);
                             writeH3(bf, "Diámetro: "+Integer.toString(planet.getDiameter()));
                             writeH3(bf,"Distancia al sol: "+Float.toString(planet.getSunDistance()));
                             writeH2(bf, "Satélites");
@@ -185,9 +185,9 @@ public class HtmlFileControl
         bf.write("</tr>"+"\n");
     }
     
-    private static void writeImg(BufferedWriter bf, Planet planet) throws IOException
+    private static void writePlanetImg(BufferedWriter bf, Planet planet) throws IOException
     {
-        bf.write("<img src=\"../img/"+planet.getFormattedName().trim()+".png"+"\" alt=\""+planet.getFormattedName().trim()+"Image"+"\""+">"+"\n");
+        bf.write("<img class=\"planetImg\" src=\"../img/"+planet.getFormattedName().trim()+".gif"+"\" alt=\""+planet.getFormattedName().trim()+"Image"+"\""+">"+"\n");
     }
     
     private static String getImagePath(String planetName) throws IOException

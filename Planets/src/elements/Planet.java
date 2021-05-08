@@ -102,12 +102,14 @@ public class Planet extends Element
         
         ArrayList<Satellite> satelliteList=SatelliteFileControl.readSatelliteList(satellitePosList);
        
-        int i=0;
-        
-        while (satelliteList.get(i)!=null)
-        {
-            satellitesName+=satelliteList.get(i).getName();
-            i++;
+        if (satelliteList.size()!=0) 
+        {            
+            for (Satellite s: satelliteList)
+            {
+                satellitesName+=s.getName()+"\n";
+            }
+        }else{
+            satellitesName="Todavía no hay satélites";
         }
         
         return satellitesName;

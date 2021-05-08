@@ -2,20 +2,17 @@ package elements;
 /** 
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
-public class Satellite 
+public class Satellite extends Element
 {
     public final static int NAME_MAX_LENGTH=10;
     
-    private String name;
     private String planetName;
-    private int diameter;
     private int planetDistance;
     
 
     public Satellite(String name, String planetName, int diameter, int planetDistance)
     {
-        this.name = name;
-        this.diameter = diameter;
+        super(name, diameter);
         this.planetDistance = planetDistance;
         this.planetName = planetName;
     }
@@ -24,9 +21,21 @@ public class Satellite
     {
         return NAME_MAX_LENGTH + Integer.BYTES+Integer.BYTES+NAME_MAX_LENGTH;
     }
+
+    @Override
+    public String toString() 
+    {
+        return "Nombre: " + name+"\n"+"Nombre del planeta: " + planetName+"\n"+"Diametro: " + diameter+"\n"+
+                    "Distancia al planeta: " + planetDistance;
+    }
     
       //######### GET & SET#########
-     public static String getNameFormat()
+     public String getName()
+    {
+        return name;
+    }
+     
+    public static String getNameFormat() 
     {
         return "%-"+NAME_MAX_LENGTH+"."+NAME_MAX_LENGTH+"s";
     }
@@ -41,11 +50,13 @@ public class Satellite
         return String.format(Planet.nameFormat(), planetName);
     }
     
-    public int getDiameter() {
+    public int getDiameter() 
+    {
         return diameter;
     }
 
-    public int  getPlanetDistance() {
+    public int  getPlanetDistance() 
+    {
         return planetDistance;
     }
     

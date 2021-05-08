@@ -1,7 +1,6 @@
 package filemanipulation;
 
 import elements.Planet;
-import elements.Satellite;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,28 +14,26 @@ import visualfront.ConsoleColors;
  */
 public class HtmlFileControl 
 {
+    private static String PATH="htmlfiles/";
+    public static File file = new File(PATH);
     /**
      * 
      * @return número de ficheros que hay en el directorio.
      */
     public static int getHTMLFileAmount()
     {
-        File file = new File("htmlfiles/");
         return file.listFiles().length;  //Devuelve un array con el número de archivos que hay en el directorio.
     }
     
     public static void generateHTMLFile(int planetPosition)
     {
-        File file = new File(PlanetFileControl.PATH);
-        RandomAccessFile planetFile; 
         BufferedWriter bf;
         Planet planet = PlanetFileControl.readPlanetList().get(planetPosition);
         String planetName=planet.getFormattedName().trim().toUpperCase();
         if (file.exists())
         {
             try {
-                planetFile= new RandomAccessFile(file, "r");
-                FileWriter fw = new FileWriter("htmlfiles/"+planet.getFormattedName().trim()+".html");
+                FileWriter fw = new FileWriter(PATH+planet.getFormattedName().trim()+".html");
                 bf = new BufferedWriter(fw);
                 
                 //Escritura del archivo linea a linea.
@@ -71,9 +68,6 @@ public class HtmlFileControl
                     closeBodyTag(bf);
                 closeHtmlTag(bf);
                     
-                
-                planetFile.close();
-                
                 bf.close();
                 fw.close();
                 System.out.println(ConsoleColors.GREEN+"Archivo HTML generado correctamente.");

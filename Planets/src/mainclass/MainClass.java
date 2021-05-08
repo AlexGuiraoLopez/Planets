@@ -1,5 +1,6 @@
 package mainclass;
 
+import elements.Element;
 import elements.Planet;
 import elements.Satellite;
 import filemanipulation.HtmlFileControl;
@@ -49,42 +50,27 @@ public class MainClass
             userAns=Keyboard.readInt();
             switch(userAns)
             {
-                case 1: //Introducir planeta. 
-                    System.out.println(ConsoleColors.BLUE+"    --Introducir planeta--");
-                    Planet planet = User.createPlanet(); //(2.) El usuario crea un planeta.
-                    PlanetFileControl.writePlanet(planet);//(3.) La info del planeta se registra en el fichero.
+                case 1: //Introducir planeta.                  
+                    insertPlanet();
                 break;
                     
-                case 2: //Introducir satélite. 
-                    System.out.println(ConsoleColors.PURPLE+"   --Introducir satélite--");
-                    Satellite satellite = User.createSatellite();//(4.) El usuario crea un satélite.
-                    SatelliteFileControl.writeSatellite(satellite); //(5.) La info del satélite se registra en el fichero.
+                case 2: //Introducir satélite.         
+                    insertSatellite();
                     break;
                     
-                case 3: //Mostrar planeta.
-                    showPlanetNames();
-                    if (PlanetFileControl.getPlanetAmount()>0)
-                    {
-                        //(6.) La info del planeta se recoge.
-                        String planetInfo=PlanetFileControl.getPlanetInfo(User.selectPlanet()-1); 
-                        System.out.println(planetInfo);//(7.) Muestra la info del planeta.
-                    }
+                case 3:     //Mostrar planeta.                  
+                    showPlanet();
                     Time.waitForSeconds(750);
                     break;
                     
                 case 4: //Mostrar satélite.
-                    showSatelliteNames();
-                    if (SatelliteFileControl.getSatelliteAmount()>0)
-                    {
-                        //(8.)La info del satélite se recoge.
-                        String sateliteInfo=SatelliteFileControl.getSatelliteInfo(User.selectSatellite()-1); 
-                        System.out.println(sateliteInfo);//(9.) Muestra la info del satelite.
-                    }
+                    showSatellite();
                     Time.waitForSeconds(750);
                     break;
                     
                 case 5: //Generar HTML.
-                    showPlanetNames();
+                    ArrayList planetList = PlanetFileControl.readPlanetList();
+                    showElementNames(planetList);
                     if (PlanetFileControl.getPlanetAmount()>0)
                     {
                         //(10.) Genera archivo HTML del planeta seleccionado.
@@ -116,52 +102,105 @@ public class MainClass
         System.out.println("¡No olvides que tus datos han sido registrados!");
         System.out.println("Vuelve a acceder cuando te apetezca ;)");
     }
-    
-    public static void showPlanetNames()
+
+
+
+    //========================MÉTODOS PRINCIPALES=========================
+
+    /**
+     * Inserta un planeta en el sistema.
+     * (Opción 1 del programa)
+     */
+    private static void insertPlanet() 
     {
-        if (PlanetFileControl.getPlanetAmount()==0)
-        {
-            System.out.println(ConsoleColors.RED+"No hay planetas todavía");
-            Time.waitForSeconds(500);
-        }else{
-            ArrayList<String> planetNameList=PlanetFileControl.readPlanetNameList();
-            int pos=1;
-            
-            for (String s:planetNameList)
-            {
-                System.out.println(pos+"- "+s);
-                pos++;
-            }
-        }
+        System.out.println(ConsoleColors.BLUE+"    --Introducir planeta--");
+        Planet planet = User.createPlanet(); //(2.) El usuario crea un planeta.
+        PlanetFileControl.writePlanet(planet);//(3.) La info del planeta se registra en el fichero.
     }
     
-    public static void showSatelliteNames()
+    /**
+     * Inserta un satélite en el sistema.
+     * (Opción 2 del programa)
+     */
+    private static void insertSatellite() 
     {
-        if (SatelliteFileControl.getSatelliteAmount()==0)
+        if (PlanetFileControl.getPlanetAmount()>0)
         {
-            System.out.println(ConsoleColors.RED+"No hay satélites todavía");
-            Time.waitForSeconds(500);
+            System.out.println(ConsoleColors.PURPLE+"   --Introducir satélite--");
+            Satellite satellite = User.createSatellite();//(4.) El usuario crea un satélite.
+            SatelliteFileControl.writeSatellite(satellite); //(5.) La info del satélite se registra en el fichero.
         }else{
-            ArrayList<String> satelliteNameList=SatelliteFileControl.getSatelliteNameList();
-            int pos=1;
-            for (String s:satelliteNameList)
-            {
-                System.out.println(pos+"- "+s);
-                pos++;
-            }
+            System.out.println(ConsoleColors.RED+"Inserta mínimo un planeta antes de satélites");
         }
     }
     
     /**
-     * Elimina todos los  ficheros de datos.
+     * Muestra la información de un planeta.
+     * (Opción 3 del programa)
+     */
+    private static void showPlanet() 
+    {
+        ArrayList planetList = PlanetFileControl.readPlanetList();
+        showElementNames(planetList);
+        
+        if (PlanetFileControl.getPlanetAmount()>0)
+        {
+            Planet planet=PlanetFileControl.readPlanet(User.selectPlanet()-1);
+            String planetInfo= planet.toString();//(6.) La info del planeta se recoge.
+            System.out.println(planetInfo);//(7.) Muestra la info del planeta.
+        }else{
+            System.out.println(ConsoleColors.RED+"No hay planetas todavía");
+        }
+    }
+    
+    /**
+     * Muestra la información de un satélite.
+     * (Opción 4 del programa)
+     */
+    private static void showSatellite() 
+    {
+        ArrayList satelliteList = SatelliteFileControl.readSatelliteList();
+        showElementNames(satelliteList);
+        
+        if (SatelliteFileControl.getSatelliteAmount()>0)
+        {
+            Satellite planet=SatelliteFileControl.readSatellite(User.selectSatellite()-1);
+            String satelliteInfo= planet.toString();//(6.) La info del planeta se recoge.
+            System.out.println(satelliteInfo);//(7.) Muestra la info del planeta.
+        }else{
+            System.out.println(ConsoleColors.RED+"No hay satélites todavía");
+        }
+    }
+    
+    /**
+     * Muestra una lista numerada con nombres de algún elemento
+     * en el orden de su archivo binario correspondiente.
+     * @param elementList lista de elementos a mostrar.
+     */
+    public static void showElementNames(ArrayList<Element> elementList)
+    {
+        int nameIndex=1;
+
+        for (Element element:elementList)
+        {
+            System.out.println(nameIndex+"- "+element.getName());
+            nameIndex++;
+        }
+    }
+    
+    /**
+     * Elimina todos los ficheros de datos.
      */
     public static void eraseAllInfo()
     {
-        File planetFile = new File(PlanetFileControl.PATH);
-        File satelliteFile = new File (SatelliteFileControl.PATH);
+        PlanetFileControl.file.delete();
+        SatelliteFileControl.file.delete();
         
-        planetFile.delete();
-        satelliteFile.delete();
+        File [] file = HtmlFileControl.file.listFiles();
         
+        for (File f:file)
+        {
+            f.delete();
+        }
     }
 }

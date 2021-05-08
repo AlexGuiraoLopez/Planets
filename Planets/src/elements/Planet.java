@@ -1,25 +1,32 @@
 package elements;
+
+import filemanipulation.SatelliteFileControl;
+
 /**
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
-public class Planet 
+public class Planet extends Element
 {
     public final static int NAME_MAX_LENGTH=10;
     public final static int MAX_SATELLITE=10;
     
-    private String name;
-    private int diameter;
     private float sunDistance;
     private int[] satellitePosList = new int[MAX_SATELLITE];
     private int hasWeb;
 
     public Planet(String name,int diameter, float sunDistance) 
     {
-        this.name=name;
-        this.diameter = diameter;
+        super(name, diameter);
         this.sunDistance = sunDistance;
         resetSatelliteList(); //Fija el valor de las posiciones a -1 para indicar espacios vacíos.
         this.hasWeb=0;
+    }
+    
+     public Planet(String name,int diameter, float sunDistance, int[] satellitePosList) 
+    {
+        super(name, diameter);
+        this.sunDistance = sunDistance;
+        this.satellitePosList=satellitePosList;
     }
 
     
@@ -40,9 +47,9 @@ public class Planet
      * Tamaño de los registros para los atributos de los planetas.
      * @return tamaño de cada registro.
      */
-    public static int size()
+    public static int recordSize()
     {
-        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES+Integer.BYTES*MAX_SATELLITE+Integer.BYTES;
+        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES+Integer.BYTES*MAX_SATELLITE/*+Integer.BYTES*/;
     }
     
     /**
@@ -89,12 +96,15 @@ public class Planet
         return String.format(nameFormat(),nameToFormat);
     }
 
-    
-    //######### GET & SET#########
-    public int getDiameter() {
-        return diameter;
+    @Override
+    public String toString() 
+    {
+        return "Nombre: " + name+"\n"+"Diametro: " + diameter+"\n"+"Distancia al sol: " + sunDistance+"\n"+
+                    "    - Satélites -"+"\n"+SatelliteFileControl.getSatelliteNames(satellitePosList);
     }
 
+    
+    //######### GET & SET#########
     public float getSunDistance() {
         return sunDistance;
     }

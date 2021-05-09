@@ -1,34 +1,44 @@
 package visualfront;
 
 /**
- * Dibuja figuras utilizando púramente código ASCII.
+ * Dibuja visuales utilizando púramente código ASCII.
  * @author Alex Guirao López <aguiraol2021@cepnet.net>
  */
 public class Paint 
 {
-    public static void drawBanner(String _message)
+    /**
+     * Genera un banner de bienvenida al programa.
+     * @param title título del banner.
+     */
+    public static void drawBanner(String title)
     {
         System.out.println("╔═════════════════╗");
-        System.out.println("║ "+_message+"  ║        ");
+        System.out.println("║ "+title+"  ║        ");
         System.out.println("╚═════════════════╝");
     }
     
-     public static void breakLine()
+    /**
+     * Genera una linea de separación entre secciones del programa.
+     */
+    public static void breakLine()
     {
-        System.out.println("=========================");
+        System.out.println("==========================");
     }
      
-     public static void drawMainImage()
-     {
-            System.out.println("              *   .                  .              .        .   *     .                .");
-            System.out.println(".         .                     .       .           .      .           .       .");
-            System.out.println("o                             .             .      .");
+    /**
+     * Dibuja la imagen principal del programa.
+     */
+    public static void drawMainImage()
+    {
+            System.out.println("   *   .                  .              .        .   *     .                .");
+            System.out.println(".      .                     .       .           .      .           .       .");
+            System.out.println("                             .             .      .");
             System.out.println(".              .                  .           .");
-            System.out.println("0     .");
+            System.out.println("     .");
             System.out.println(".          .                 ,                ,    ,");
             System.out.println("          \\          .              .           .");
             System.out.println("   .   \\   ,");
-            System.out.println("      .    o     .                 .                   .            .");
+            System.out.println("      .         .                 .                   .            .");
             System.out.println(".         \\                 ,             .                .");
             System.out.println("  .             #\\##\\#      .                              .        .");
             System.out.println("        .    #  #O##\\###                .                        .");

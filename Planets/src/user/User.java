@@ -1,4 +1,5 @@
 package user;
+
 import elements.Planet;
 import elements.Satellite;
 import filemanipulation.PlanetFileControl;
@@ -6,11 +7,18 @@ import filemanipulation.SatelliteFileControl;
 import input.Keyboard;
 import java.util.InputMismatchException;
 import visualfront.ConsoleColors;
+
 /**
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
 public class User 
 {
+    /**
+     * El usuario introduce una cadena de texto limitado a una longitud máxima.
+     * @param maxLength longitud máxima de la cadena.
+     * @param message mensaje de petición de datos para el usuario.
+     * @return cadena de texto.
+     */
     public static String insertText(int maxLength, String message)
     {
         String name;
@@ -26,6 +34,11 @@ public class User
         return name;
     }
     
+    /**
+     * El usuario introduce un número entero positivo y mayor a 0.
+     * @param message  mensaje de petición de datos para el usuario.
+     * @return número entero positivo y mayor a 0.
+     */
     public static int insertUnsignedInt(String message)
     {
         int number=0;
@@ -50,6 +63,11 @@ public class User
         return number;
     }
     
+      /**
+     * El usuario introduce un número decimal positivo y mayor a 0.
+     * @param message  mensaje de petición de datos para el usuario.
+     * @return número decimal positivo y mayor a 0.
+     */
     public static float insertUnsignedFloat(String message)
     {
         float number=0;
@@ -72,6 +90,10 @@ public class User
         return number;
     }
     
+    /**
+     * El usuario crea un planeta.
+     * @return planeta creado.
+     */
     public static Planet createPlanet()
     {
         String name = insertText(Planet.NAME_MAX_LENGTH, "> Introduce el nombre del planeta");
@@ -81,7 +103,11 @@ public class User
         return new Planet(name, diameter, sunDistance);
     }
     
-      public static int selectPlanet()
+    /**
+     * El usuario selecciona un planeta de la lista.
+     * @return índice del planeta seleccionado en la lista.
+     */
+    public static int selectPlanet()
     {
         int userAns=0;
         
@@ -96,7 +122,11 @@ public class User
         return userAns;
     }
       
-       public static Satellite createSatellite()
+    /**
+     * El usuario crea un satélite.
+     * @return satélite creado.
+     */
+    public static Satellite createSatellite()
     {
         String name = insertText(Satellite.NAME_MAX_LENGTH, "> Introduce el nombre del satélite:");
         String planetName;
@@ -114,6 +144,10 @@ public class User
         return new Satellite(name, planetName, diameter, planetDistance);
     }
        
+    /**
+     * El usuario selecciona un satélite de la lista.
+     * @return índice del satélite seleccionado en la lista.
+     */
     public static int selectSatellite()
     {
         int userAns=0;

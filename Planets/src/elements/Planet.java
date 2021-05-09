@@ -1,26 +1,23 @@
 package elements;
-
 import filemanipulation.SatelliteFileControl;
 import java.util.ArrayList;
 
 /**
+ * Clase para crear y obtener información de planetas.
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
-public class Planet extends Element
+public class Planet extends SpaceElement
 {
-    public final static int NAME_MAX_LENGTH=10;
-    public final static int MAX_SATELLITE=10;
-    
+    public final static int NAME_MAX_LENGTH=10; //Longitud máxima para el nombre.
+    public final static int MAX_SATELLITE=10; //Longitud máxima de posiciones para sus planetas.
     private float sunDistance;
     private int[] satellitePosList = new int[MAX_SATELLITE];
-    private int hasWeb;
 
     public Planet(String name,int diameter, float sunDistance) 
     {
-        super(name, diameter);
+        super(name,diameter);
         this.sunDistance = sunDistance;
         resetSatelliteList(); //Fija el valor de las posiciones a -1 para indicar espacios vacíos.
-        this.hasWeb=0;
     }
     
      public Planet(String name,int diameter, float sunDistance, int[] satellitePosList) 
@@ -49,7 +46,7 @@ public class Planet extends Element
      */
     public static int recordSize()
     {
-        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES+Integer.BYTES*MAX_SATELLITE/*+Integer.BYTES*/;
+        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES+Integer.BYTES*MAX_SATELLITE;
     }
     
     /**
@@ -61,15 +58,7 @@ public class Planet extends Element
         return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES;
     }
     
-     /**
-     * Tamaño de los campos anteriores al check de web para posicionar el puntero en ese punto.
-     * @return tamaño de los registros anteriores al check de web.
-     */
-    public static int hasWebStartIndex()
-    {
-        return NAME_MAX_LENGTH + Integer.BYTES + Float.BYTES+Integer.BYTES;
-    }
-    
+   
     /**
      * @return Formato del nombre de los planetas.
      */
@@ -79,6 +68,7 @@ public class Planet extends Element
     }
     
     /**
+     * Obtén el nombre del planeta rellenado con espacios si no llega a su máxima longitud.
      * @return Nombre formateado. 
      */
     public String getFormattedName()
@@ -96,13 +86,17 @@ public class Planet extends Element
         return String.format(nameFormat(),nameToFormat);
     }
 
+    /**
+     * Escribe una lista de nombres de los satélites dentro de la lista de posiciones.
+     * @return cadena de texto con los nombres de los satélites en formato vertical sin numerar.
+     */
     private String getSatellitesName()
     {
         String satellitesName="";
         
         ArrayList<Satellite> satelliteList=SatelliteFileControl.readSatelliteList(satellitePosList);
        
-        if (satelliteList.size()!=0) 
+        if (!satelliteList.isEmpty()) 
         {            
             for (Satellite s: satelliteList)
             {
@@ -123,16 +117,14 @@ public class Planet extends Element
     }
 
     
-    
     //######### GET & SET#########
-    public float getSunDistance() {
+    public float getSunDistance() 
+    {
         return sunDistance;
     }
 
-    public int[] getSatellitePosList() {
+    public int[] getSatellitePosList() 
+    {
         return satellitePosList;
     }
-    
-    
-    
 }

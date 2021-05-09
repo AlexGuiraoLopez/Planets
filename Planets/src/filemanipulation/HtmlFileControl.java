@@ -7,11 +7,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import visualfront.ConsoleColors;
 
 /**
+ * Librería para controlar los archivos html del programa.
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
 public class HtmlFileControl 
@@ -19,7 +18,7 @@ public class HtmlFileControl
     private static String PATH="htmlfiles/";
     public static File file = new File(PATH);
     /**
-     * 
+     * Revisa el número de ficheros que se han creado dentro del directorio de archivos html.
      * @return número de ficheros que hay en el directorio.
      */
     public static int getHTMLFileAmount()
@@ -27,19 +26,24 @@ public class HtmlFileControl
         return file.listFiles().length;  //Devuelve un array con el número de archivos que hay en el directorio.
     }
     
+    /**
+     * Genera un archivo de texto html con la información de un registro sobre un planeta.
+     * Se escribe linea a linea siguiendo una estructura basada en métodos para cada etiqueta.
+     * @param planetPosition posición del registro para el planeta del que se quiere generar el archivo.
+     */
     public static void generateHTMLFile(int planetPosition)
     {
-        BufferedWriter bf;
         Planet planet = PlanetFileControl.readPlanetList().get(planetPosition);
+        //Lista con los satelites que pertenecen al planeta.
         ArrayList<Satellite> satelliteList = SatelliteFileControl.readSatelliteList(planet.getSatellitePosList());
         
         if (file.exists())
         {
             try {
                 FileWriter fw = new FileWriter(PATH+planet.getFormattedName().trim()+".html");
-                bf = new BufferedWriter(fw);
+                BufferedWriter bf = new BufferedWriter(fw);
                 
-                //Escritura del archivo linea a linea.
+                //Escritura del archivo html linea a linea.
                 writeDocType(bf);
                 
                 openHtmlTag(bf);
@@ -55,7 +59,6 @@ public class HtmlFileControl
                             
                             openTableTag(bf);
                           
-                            
                             openTrTag(bf);
                                 writeTdTag(bf, "Imagen");
                                 writeTdTag(bf, "Nombre");
@@ -73,7 +76,7 @@ public class HtmlFileControl
                             closeTrTag(bf);
                         }
                         
-                          closeTableTag(bf);
+                            closeTableTag(bf);
                           
                         closeArticleTag(bf);
                         
@@ -93,7 +96,6 @@ public class HtmlFileControl
                 System.out.println("No se ha podido acceder al archivo"+ ex);
                 ex.printStackTrace();
             }   
-            
         }
     }
     
@@ -196,11 +198,14 @@ public class HtmlFileControl
     }
     
     //=====================EXECUTION============================
+    /**
+     * Ejecuta un archivo html para abrirlo con el navegador por defecto del sistema.
+     * @param filePosition posición del archivo a ejecutar en la lista de archivos que contiene el directorio.
+     */
     public static void executeFile(int filePosition)
     {
         File [] fileList = new File("htmlfiles\\").listFiles();
-        File fileToExecute = fileList[filePosition-1];
-        
+        File fileToExecute = fileList[filePosition-1]; //(-1 ya que inicia en 0)        
         String absolutePath= fileToExecute.getAbsolutePath();
         
         //String webBrowserPath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";

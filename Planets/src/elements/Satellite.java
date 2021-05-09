@@ -1,8 +1,9 @@
 package elements;
 /** 
+ * Clase para crear y obtener información de satélites.
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
-public class Satellite extends Element
+public class Satellite extends SpaceElement
 {
     public final static int NAME_MAX_LENGTH=10;
     
@@ -16,7 +17,11 @@ public class Satellite extends Element
         this.planetName = planetName;
     }
     
-    public static int size()
+    /**
+     * Tamaño de los registros para los atributos de los satélites.
+     * @return tamaño de cada registro.
+     */
+    public static int recordSize()
     {
         return NAME_MAX_LENGTH + Integer.BYTES+Integer.BYTES+NAME_MAX_LENGTH;
     }
@@ -29,11 +34,6 @@ public class Satellite extends Element
     }
     
     //######### GET & SET#########
-    public String getName()
-    {
-        return name;
-    }
-     
     public static String getNameFormat() 
     {
         return "%-"+NAME_MAX_LENGTH+"."+NAME_MAX_LENGTH+"s";
@@ -47,11 +47,6 @@ public class Satellite extends Element
     public String getFormattedPlanetName()
     {
         return String.format(Planet.nameFormat(), planetName);
-    }
-    
-    public int getDiameter() 
-    {
-        return diameter;
     }
 
     public int  getPlanetDistance() 

@@ -1,24 +1,27 @@
 package elements;
 /**
+ * Clase de la que derivan los planetas y los satélites.
  * @author Alex Guirao López <aguiraol2021@cepnet.net>
  */
-public abstract class Element 
+public abstract class SpaceElement 
 {
     protected String name;
     protected int diameter;
 
-    public Element(String name, int diameter) 
+    public SpaceElement(String name, int diameter) 
     {
         this.name = name;
         this.diameter=diameter;
     }
     
     //######GET & SET######
-    public String getName() {
+    public String getName() 
+    {
         return name;
     }
 
-    public int getDiameter() {
+    public int getDiameter() 
+    {
         return diameter;
     }
     

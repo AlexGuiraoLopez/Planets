@@ -7,7 +7,9 @@ import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import visualfront.ConsoleColors;
+
 /** 
+ * Librería de control de los archivos binarios de los planetas.
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
 public class PlanetFileControl
@@ -15,8 +17,10 @@ public class PlanetFileControl
     public final static String PATH="datafiles/planets.bin";
     public static File file = new File(PATH);
     
-     //===================READ===================
-       /**
+    //========================================================
+    //=======================READ============================
+    //=========================================================
+    /**
      * Calcula la cantidad de planetas que hay en el archivo.
      * @return cantidad de planetas ya escritos en el archivo.
      */
@@ -79,8 +83,8 @@ public class PlanetFileControl
         return planetPosition;
     }
         
-        /**
-     * Obtén un planeta del archivo basado en su posición.
+    /**
+     * Obtén un planeta del archivo basado en su posición del registro en el archivo.
      * @param planetPosition posición del planeta en el archivo.
      * @return instancia de un planeta.
      */
@@ -145,7 +149,9 @@ public class PlanetFileControl
     }
    
 
-    //===================WRITE===================
+    //========================================================
+    //=======================WRITE============================
+    //=========================================================
     /**
      * Escribe la información de un planeta en el archivo.
      * @param planet planeta que se va a registrar.
@@ -183,33 +189,39 @@ public class PlanetFileControl
     
     /**
      * Actualiza la lista de posiciones de satélites para un planeta.
+     * Éste método se lanza siempre que se crea un satélite nuevo.
      * @param planetName nombre del planeta
-     * @param satelliteListPosition
+     * @param satellitePosition 
      */
-    public static void updateSatellitePosList(String planetName, int satelliteListPosition)
+    public static void updateSatellitePosList(String planetName, int satellitePosition)
     {
-        int planetPosition = getPlanetPosition(planetName);
-        int satelliteListValue;
-        int pointer; //Puntero para desplazar por el archivo.
-        int i=0;
+        /*Posición del registro para el planeta con ese nombre.
+        (Cuando se registra un nuevo planeta se tiene el control para evitar nombres duplicados)*/
+        int planetPosition = getPlanetPosition(planetName); 
+        
+        int currentSatelliteValue; //Valor de la posición del satélite que se está comprobando actualmente.
+        int pointer; //Puntero para desplazarse por el archivo.
+        
         try {
             RandomAccessFile raf = new RandomAccessFile (PATH,"rw");
+            //Situa el puntero en el campo donde inicia la lista de posiciones para los satélites
             pointer=planetPosition*Planet.recordSize()+Planet.satelliteListStartIndex();
             raf.seek(pointer);
             
+            int loopIndex=0;
             do
             {
-                satelliteListValue=raf.readInt();
-                pointer+=Integer.BYTES;
+                currentSatelliteValue=raf.readInt();
+                pointer+=Integer.BYTES; //Avanza el puntero al siguiente satélite de la lista.
                 
-                if (satelliteListValue==-1)
+                if (currentSatelliteValue==-1) //Si la posición que se acaba de leer está vacía.
                 {
-                    pointer-=Integer.BYTES;
-                    raf.seek(pointer);
-                    raf.writeInt(satelliteListPosition);
+                    pointer-=Integer.BYTES; //Retrocede el puntero al inicio del campo.
+                    raf.seek(pointer);  //Posiciona el puntero.
+                    raf.writeInt(satellitePosition); //Escribe la posición del satélite ocupando el primer espacio vacío (-1).
                 }
-                i++;
-            }while(satelliteListValue!=-1&&i<Planet.MAX_SATELLITE);
+                loopIndex++;
+            }while(currentSatelliteValue!=-1&&loopIndex<Planet.MAX_SATELLITE);
             
             raf.close();
         }
@@ -221,7 +233,6 @@ public class PlanetFileControl
         {
             System.out.println("No se ha podido acceder al archivo");
         }
-        
     }
     
     

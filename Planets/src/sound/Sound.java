@@ -13,8 +13,11 @@ import sun.audio.AudioStream;
  */
 public class Sound 
 {
-        public static void startAudio() 
-        {
+    /**
+    * Activa el audio del programa.
+    */
+    public static void startAudio() 
+    {
         try {
             InputStream input = new FileInputStream("sound/music.wav");
             try {

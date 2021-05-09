@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import visualfront.ConsoleColors;
 
 /** 
+ * Librería de control de los archivos binarios de los satélites.
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
 public class SatelliteFileControl 
@@ -29,13 +30,14 @@ public class SatelliteFileControl
       
         if (file.exists())
         {
-            satelliteAmount= (int)file.length()/Satellite.size();
+            satelliteAmount= (int)file.length()/Satellite.recordSize();
         }
         return satelliteAmount;
     }
     
-        /**
-     * Busca la posición de un satélite en los registros.
+    /**
+     * Busca la posición de un satélite en los registros a partir de su nombre.
+     * También detecta si el satélite se encuentra en el archivo.
      * @param satelliteName nombre del satélite a encontrar.
      * @return posición del satélite en los registros (si es -1 no está en el fichero).
      */
@@ -46,27 +48,31 @@ public class SatelliteFileControl
         try {
             if (file.exists())
             {
-            RandomAccessFile raf = new RandomAccessFile(file, "r");
-            String checkName;
-            byte [] bName;
-            int satelliteAmount=(int)file.length()/Satellite.size();
-            
-            int loopIterator=0; 
-            
-            while(loopIterator<satelliteAmount && satellitePosition==-1)
-            {
-                raf.seek(loopIterator*Satellite.size());
-                bName=new byte[Satellite.NAME_MAX_LENGTH];
-                raf.read(bName);
-                checkName=new String(bName);
-                if (checkName.equalsIgnoreCase(satelliteName))
+                RandomAccessFile raf = new RandomAccessFile(file, "r");
+                String checkName;
+                byte [] bName;
+                int satelliteAmount=(int)file.length()/Satellite.recordSize();
+
+                int loopIterator=0; 
+
+                while(loopIterator<satelliteAmount && satellitePosition==-1)
                 {
-                    satellitePosition=loopIterator;
+                    //Lectura del nombre en el registro actual.
+                    raf.seek(loopIterator*Satellite.recordSize());
+                    bName=new byte[Satellite.NAME_MAX_LENGTH];
+                    raf.read(bName);
+                    checkName=new String(bName);
+                    
+                    //Comprobación de igualdad en los nombres.
+                    if (checkName.equalsIgnoreCase(satelliteName))
+                    {
+                        satellitePosition=loopIterator; //Posición encontrada.
+                    }
+                    
+                    loopIterator++;
                 }
-                loopIterator++;
-            }
-            
-            raf.close();
+
+                raf.close();
             }
         }
         catch (FileNotFoundException ex) 
@@ -77,13 +83,14 @@ public class SatelliteFileControl
         {
             System.out.println("No se puede acceder al archivo" + ex);
         }
-        return satellitePosition;
+        
+        return satellitePosition; //Se devuelve -1 si el satélite no se ha encontrado.
     }
         
-          /**
+    /**
      * Obtén un satélite del archivo basado en su posición.
      * @param satellitePosition posición del satélite en el archivo.
-     * @return instancia de un satélite.
+     * @return instancia de un satélite con los datos del registro.
      */
     public static Satellite readSatellite(int satellitePosition)
     {
@@ -99,7 +106,7 @@ public class SatelliteFileControl
             
             raf = new RandomAccessFile(PATH,"r");
             
-            raf.seek(satellitePosition*Satellite.size());
+            raf.seek(satellitePosition*Satellite.recordSize());
             
             bName=new byte[Satellite.NAME_MAX_LENGTH];
             raf.read(bName);
@@ -131,7 +138,7 @@ public class SatelliteFileControl
     
     /**
      * Guarda una lista con los satélites registrados en el archivo.
-     * @return lista de los satélites.
+     * @return lista de los satélites con los datos del archivo.
      */
     public static ArrayList<Satellite> readSatelliteList()
     {
@@ -153,11 +160,11 @@ public class SatelliteFileControl
      * Obtén una lista de satélites correspondiente a la lista de posiciones para los satélites
      * que orbitan a un planeta.
      * @param satellitePosList lista de posiciones a obetener sus satélites.
-     * @return satélites de las posiciones.
+     * @return lista de satélites de las posiciones seleccionadas.
      */
     public static ArrayList<Satellite> readSatelliteList(int[] satellitePosList)
     {
-        ArrayList<Satellite>satelliteList= new ArrayList<Satellite>();
+        ArrayList<Satellite>satelliteList= new ArrayList();
         
         int pos=0;
         String name;
@@ -171,9 +178,11 @@ public class SatelliteFileControl
             {
                 RandomAccessFile raf = new RandomAccessFile(file, "r");
                 
+                /*Irá registrando satélites en la lista hasta que encuentre el -1 que se inició al crear el planeta
+                para evitar obtener más de un satélite con índice 0*/
                 while(satellitePosList[pos]!=-1)
                 {
-                    raf.seek(satellitePosList[pos]*Satellite.size());
+                    raf.seek(satellitePosList[pos]*Satellite.recordSize());
                     bName=new byte[Satellite.NAME_MAX_LENGTH];  
                     raf.read(bName);
                     name= new String(bName);
@@ -203,15 +212,12 @@ public class SatelliteFileControl
             System.out.println("No se ha leer encontrar el archivo" + ex);
         }
         
-        if (satelliteList.isEmpty())
-        {
-            System.out.println("No contiene satélites");
-        }
-        
         return satelliteList; 
     }
     
+    //========================================================
     //=======================WRITE============================
+    //=========================================================
     /**
      * Escribe la información de un planeta en el archivo.
      * @param satellite planeta que se va a registrar.
@@ -221,18 +227,19 @@ public class SatelliteFileControl
         File file = new File(PATH);
         int satelliteAmount = getSatelliteAmount();
         try {
+            //Si el satélite no está en la lista (-1).
             if (getSatellitePosition(satellite.getFormattedName())==-1)
             {
-            RandomAccessFile raf = new RandomAccessFile(PATH, "rw");
-            raf.seek(satelliteAmount*Satellite.size());
-            raf.write(satellite.getFormattedName().getBytes(Charset.defaultCharset()));
-            raf.write(satellite.getFormattedPlanetName().getBytes(Charset.defaultCharset()));
-            raf.writeInt(satellite.getDiameter());
-            raf.writeInt(satellite.getPlanetDistance());
-            raf.close();
-            
-            //IMPORTANTE => Actualiza la lista de posiciones de satelites en los planetas.
-            PlanetFileControl.updateSatellitePosList(satellite.getFormattedPlanetName(),satelliteAmount); 
+                RandomAccessFile raf = new RandomAccessFile(PATH, "rw");
+                raf.seek(satelliteAmount*Satellite.recordSize());
+                raf.write(satellite.getFormattedName().getBytes(Charset.defaultCharset()));
+                raf.write(satellite.getFormattedPlanetName().getBytes(Charset.defaultCharset()));
+                raf.writeInt(satellite.getDiameter());
+                raf.writeInt(satellite.getPlanetDistance());
+                raf.close();
+
+                //IMPORTANTE => Actualiza la lista de posiciones de satelites en los planetas.
+                PlanetFileControl.updateSatellitePosList(satellite.getFormattedPlanetName(),satelliteAmount); 
             }
             else
             {
@@ -246,13 +253,12 @@ public class SatelliteFileControl
         }
     }
     
-    
-//=====================================================================================
-//=====================================================================================
-//=====================================================================================
+   
     
     
-    //========================DEPCRECATED============================
+//=============================================================================================
+//=========================DEPCRECATED===========================
+//==================================================================
     /**
      * Busca el nombre de un planeta en un archivo y comprueba si ya existe.
      * @param planetName nombre del planeta a comprobar.
@@ -271,11 +277,11 @@ public class SatelliteFileControl
             {
             RandomAccessFile raf = new RandomAccessFile(file, "r");
             
-            int satelliteAmount=(int)file.length()/Satellite.size();
+            int satelliteAmount=(int)file.length()/Satellite.recordSize();
             
             while(pos<satelliteAmount && found==false)
             {
-                raf.seek(pos*Satellite.size());
+                raf.seek(pos*Satellite.recordSize());
                 bName=new byte[Satellite.NAME_MAX_LENGTH];
                 raf.read(bName);
                 checkName=new String(bName);
@@ -317,7 +323,7 @@ public class SatelliteFileControl
         
         try {
             raf = new RandomAccessFile(PATH,"r");
-            raf.seek(satellitePosition*Satellite.size());
+            raf.seek(satellitePosition*Satellite.recordSize());
             bName=new byte[Satellite.NAME_MAX_LENGTH];  
             raf.read(bName);
             name= new String(bName).trim();
@@ -361,7 +367,7 @@ public class SatelliteFileControl
                 RandomAccessFile raf = new RandomAccessFile(file, "r");
                 for (int i = 0;i<satelliteAmount;i++)
                 {
-                    raf.seek(i*Satellite.size());
+                    raf.seek(i*Satellite.recordSize());
                     bName=new byte[Satellite.NAME_MAX_LENGTH]; 
                     raf.read(bName);
                     name= new String(bName).trim();

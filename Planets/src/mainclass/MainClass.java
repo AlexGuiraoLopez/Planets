@@ -9,6 +9,7 @@ import filemanipulation.SatelliteFileControl;
 import input.Keyboard;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import sound.Sound;
 import time.Time;
 import user.User;
@@ -48,6 +49,7 @@ public class MainClass
         int userAns;
         
         do{
+            try{
             //Se muestra el menú principal para que el usuario elija una opción.
             mainMenu.showMenu();
             userAns=Keyboard.readInt();
@@ -91,8 +93,15 @@ public class MainClass
                     break;
             }
             Paint.breakLine();
-            
+            }
+            catch (InputMismatchException ex)
+            {
+                System.out.println(ConsoleColors.RED+"Tipo de dato erróneo => "+ex);
+                userAns=-1;
+            }
         }while(userAns!=0);
+        
+        
     }
 
     //========================MÉTODOS PRINCIPALES=========================

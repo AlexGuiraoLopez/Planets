@@ -9,6 +9,7 @@ import java.util.InputMismatchException;
 import visualfront.ConsoleColors;
 
 /**
+ * Librería con métodos que recogen información del usuario.
  * @author Alex Guirao Lopez <aguiraol2021@cepnet.net>
  */
 public class User 
@@ -46,7 +47,7 @@ public class User
         do{
             System.out.println(message);
             try{
-            number=Keyboard.readInt();
+                number=Keyboard.readInt();
             
                 if(number<=0)
                 {

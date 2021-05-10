@@ -105,6 +105,7 @@ public class User
     
     /**
      * El usuario selecciona un planeta de la lista.
+     * Se le da la opción de introducir 0 para retroceder.
      * @return índice del planeta seleccionado en la lista.
      */
     public static int selectPlanet()
@@ -112,12 +113,12 @@ public class User
         int userAns=0;
         
         do{
-            userAns=Keyboard.getInt(ConsoleColors.GREEN+"Selecciona el planeta");
-            if (userAns<1||userAns>PlanetFileControl.getPlanetAmount())
+            userAns=Keyboard.getInt(ConsoleColors.GREEN+"Selecciona un número de la lista");
+            if (userAns<0||userAns>PlanetFileControl.getPlanetAmount())
             {
                 System.out.println(ConsoleColors.RED+"Selecciona una respuesta válida");
             }
-        }while(userAns<1||userAns>PlanetFileControl.getPlanetAmount());
+        }while(userAns<0||userAns>PlanetFileControl.getPlanetAmount());
         
         return userAns;
     }
@@ -146,6 +147,7 @@ public class User
        
     /**
      * El usuario selecciona un satélite de la lista.
+     * Se le da la opción de introducir 0 para retroceder.
      * @return índice del satélite seleccionado en la lista.
      */
     public static int selectSatellite()
@@ -153,12 +155,12 @@ public class User
         int userAns=0;
         
         do{
-            userAns=Keyboard.getInt(ConsoleColors.GREEN+"Selecciona el satelite");
-            if (userAns<1||userAns>SatelliteFileControl.getSatelliteAmount())
+            userAns=Keyboard.getInt(ConsoleColors.GREEN+"Selecciona un número de la lista");
+            if (userAns<0||userAns>SatelliteFileControl.getSatelliteAmount())
             {
                 System.out.println(ConsoleColors.RED+"Selecciona una respuesta válida");
             }
-        }while(userAns<1||userAns>SatelliteFileControl.getSatelliteAmount());
+        }while(userAns<0||userAns>SatelliteFileControl.getSatelliteAmount());
         
         return userAns;
     }

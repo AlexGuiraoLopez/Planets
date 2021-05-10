@@ -63,12 +63,10 @@ public class MainClass
                     
                 case 3: //Mostrar planeta.                  
                     showPlanet();
-                    Time.waitForSeconds(750);
                     break;
                     
                 case 4: //Mostrar satélite.
                     showSatellite();
-                    Time.waitForSeconds(750);
                     break;
                     
                 case 5: //Generar HTML.     
@@ -84,7 +82,7 @@ public class MainClass
                     break;
                     
                 case 0: //Salir
-                    System.out.println("¡No olvides que tus datos han sido registrados!");
+                    System.out.println("¡No olvides que los datos persisten!");
                     System.out.println("Vuelve a acceder cuando te apetezca ;)");
                     break;
                     
@@ -129,16 +127,21 @@ public class MainClass
      /**
      * Muestra una lista numerada con nombres de un elemento (satélite o planeta)
      * en el orden de su archivo binario correspondiente.
+     * También añade una opción para salir.
      * @param elementList lista de elementos a mostrar.
      */
     public static void showElementNames(ArrayList<SpaceElement> elementList)
     {
         int nameIndex=1;
 
-        for (SpaceElement element:elementList)
+        if (!elementList.isEmpty())
         {
-            System.out.println(nameIndex+"- "+element.getName());
-            nameIndex++;
+            for (SpaceElement element:elementList)
+            {
+                System.out.println(nameIndex+"- "+element.getName());
+                nameIndex++;
+            }
+            System.out.println("0- Salir");
         }
     }
     
@@ -148,6 +151,7 @@ public class MainClass
      */
     private static void showPlanet() 
     {
+        System.out.println(ConsoleColors.CYAN+ "   --Mostrar planeta--");
         //Guarda en una lista los planetas del archivo en orden.
         ArrayList planetList = PlanetFileControl.readPlanetList(); 
         showElementNames(planetList); //Muestra los nombres de los planetas al usuario.
@@ -156,9 +160,14 @@ public class MainClass
         {
             /*El usuario selecciona el planeta escribiendo el número de su posición 
             (-1 para igualar al sistema de posicionamiento de los registros).*/
-            Planet planet=PlanetFileControl.readPlanet(User.selectPlanet()-1);
-            String planetInfo= planet.toString();//La info del planeta se recoge.
-            System.out.println(planetInfo);//Muestra la info del planeta.
+            int userAns= User.selectPlanet();
+            if(userAns!=0)
+            {
+                Planet planet=PlanetFileControl.readPlanet(userAns-1);
+                String planetInfo= planet.toString();//La info del planeta se recoge.
+                System.out.println(planetInfo);//Muestra la info del planeta.
+                Time.waitForSeconds(750);
+            }
         }else{
             System.out.println(ConsoleColors.RED+"No hay planetas todavía");
         }
@@ -170,6 +179,7 @@ public class MainClass
      */
     private static void showSatellite() 
     {
+        System.out.println(ConsoleColors.PURPLE+ "   --Mostrar satélite--");
         //Guarda en una lista los satélites del archivo en orden.
         ArrayList satelliteList = SatelliteFileControl.readSatelliteList();
         showElementNames(satelliteList);
@@ -178,9 +188,14 @@ public class MainClass
         {
             /*El usuario selecciona el satélite escribiendo el número de su posición 
             (-1 para igualar al sistema de posicionamiento de los registros).*/
-            Satellite planet=SatelliteFileControl.readSatellite(User.selectSatellite()-1);
-            String satelliteInfo= planet.toString();//La info del planeta se recoge.
-            System.out.println(satelliteInfo);//Muestra la info del planeta.
+            int userAns=User.selectSatellite();
+            if (userAns!=0)
+            {
+                Satellite planet=SatelliteFileControl.readSatellite(userAns-1);
+                String satelliteInfo= planet.toString();//La info del planeta se recoge.
+                System.out.println(satelliteInfo);//Muestra la info del planeta.
+                Time.waitForSeconds(750);
+            }
         }else{
             System.out.println(ConsoleColors.RED+"No hay satélites todavía");
         }
@@ -192,6 +207,7 @@ public class MainClass
      */
      private static void generateWeb()
     {
+        System.out.println(ConsoleColors.YELLOW+ "   --Generar HTML--");
         //Guarda en una lista los planetas del archivo en orden.
         ArrayList planetList = PlanetFileControl.readPlanetList();
         showElementNames(planetList);
@@ -212,15 +228,16 @@ public class MainClass
       */
      private static void executeWeb()
      {
-         File [] file = HtmlFileControl.file.listFiles();
+         System.out.println(ConsoleColors.YELLOW+ "   --Ejecutar web--");
+         File [] fileList = HtmlFileControl.file.listFiles();
          
-         if (file.length>0)
+         if (fileList.length>0)
          {
             int loopIndex=1;
             int userAns;
 
             do{ //Muestra los archivos html existentes.
-                for (File f:file)
+                for (File f:fileList)
                {
                     System.out.println(loopIndex+"- "+f.getName());
                     loopIndex++;
@@ -228,11 +245,11 @@ public class MainClass
                 
                userAns=User.insertUnsignedInt("Selecciona un archivo");
 
-               if (userAns>file.length)
+               if (userAns>fileList.length)
                {
                    System.out.println(ConsoleColors.RED+"Selecciona un archivo válido...");
                }
-            }while(userAns>file.length);
+            }while(userAns>fileList.length);
 
             HtmlFileControl.executeFile(userAns); //Ejecuta el archivo HTML.
             System.out.println(ConsoleColors.GREEN+"Se ha ejecutado el archivo correctamente.");
@@ -247,6 +264,7 @@ public class MainClass
      */
     public static void eraseAllInfo()
     {
+        System.out.println(ConsoleColors.RED+ "   --Eliminar datos--");
         char userAns;
         //Avisos de seguridad antes de eliminar los datos.
         System.out.println(ConsoleColors.RED+"¿Estás seguro de eliminar todos los datos?");
@@ -266,6 +284,8 @@ public class MainClass
             }
             
             System.out.println(ConsoleColors.RED+"Los datos han sido eliminados correctamente.");
+        }else{
+            System.out.println(ConsoleColors.RED+"Operación cancelada.");
         }
     }
 }

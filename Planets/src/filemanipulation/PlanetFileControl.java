@@ -42,7 +42,7 @@ public class PlanetFileControl
      * @param planetName nombre del planeta a encontrar.
      * @return posición del planeta en los registros (si es -1 no está en el fichero).
      */
-    private static int getPlanetPosition(String planetName)
+    public static int getPlanetPosition(String planetName)
     {
         int planetPosition=-1; //Empieza en -1 como indicador de que el planeta no está en el archivo.
         

@@ -35,8 +35,7 @@ public class MainClass
      * Programa de gestión para planetas y satélites.
      * Permite registrar y leer información sobre ellos.
      * También permite generar y ejecutar archivos html 
-     * con los datos correspondientes para ver 
-     * la información más detallada.
+     * con los datos correspondientes para ver la información más detallada.
      * @param args 
      */
     public static void main(String[] args) 
@@ -50,49 +49,48 @@ public class MainClass
         
         do{
             try{
-            //Se muestra el menú principal para que el usuario elija una opción.
-            mainMenu.showMenu();
-            userAns=Keyboard.readInt();
-            switch(userAns)
-            {
-                case 1: //Introducir planeta.                  
-                    insertPlanet();
-                break;
-                    
-                case 2: //Introducir satélite.         
-                    insertSatellite();
+                mainMenu.showMenu();
+                userAns=Keyboard.readInt();
+                switch(userAns)
+                {
+                    case 1: //Introducir planeta.                  
+                        insertPlanet();
                     break;
-                    
-                case 3: //Mostrar planeta.                  
-                    showPlanet();
+
+                    case 2: //Introducir satélite.         
+                        insertSatellite();
+                        break;
+
+                    case 3: //Mostrar planeta.                  
+                        showPlanet();
+                        break;
+
+                    case 4: //Mostrar satélite.
+                        showSatellite();
+                        break;
+
+                    case 5: //Generar HTML.     
+                        generateWeb();
                     break;
-                    
-                case 4: //Mostrar satélite.
-                    showSatellite();
-                    break;
-                    
-                case 5: //Generar HTML.     
-                    generateWeb();
-                    Time.waitForSeconds(750);
-                break;
+
+                    case 6: //Ejecutar HTML.
+                       executeWeb();
+                        break;
+
+                    case -1:eraseAllInfo(); //ELIMINA TODA LA INFORMACIÓN
+                        break;
+
+                    case 0: //Salir
+                        System.out.println("¡No olvides que los datos persisten!");
+                        System.out.println("Vuelve a acceder cuando te apetezca ;)");
+                        break;
+
+                    default: 
+                        System.out.println(ConsoleColors.RED+"Opción errónea");
+                        break;
+                }
                 
-                case 6: //Ejecutar HTML.
-                   executeWeb();
-                    break;
-                    
-                case -1:eraseAllInfo(); //ELIMINA TODA LA INFORMACIÓN
-                    break;
-                    
-                case 0: //Salir
-                    System.out.println("¡No olvides que los datos persisten!");
-                    System.out.println("Vuelve a acceder cuando te apetezca ;)");
-                    break;
-                    
-                default: 
-                    System.out.println(ConsoleColors.RED+"Opción errónea");
-                    break;
-            }
-            Paint.breakLine();
+                Paint.breakLine();
             }
             catch (InputMismatchException ex)
             {
@@ -100,8 +98,6 @@ public class MainClass
                 userAns=-1;
             }
         }while(userAns!=0);
-        
-        
     }
 
     //========================MÉTODOS PRINCIPALES=========================
@@ -223,9 +219,14 @@ public class MainClass
         
         if (PlanetFileControl.getPlanetAmount()>0)
         {
-            //Genera archivo HTML del planeta seleccionado.
-            HtmlFileControl.generateHTMLFile(User.selectPlanet()-1);
-            System.out.println(ConsoleColors.GREEN+"Archivo HTML generado correctamente.");
+            int userAns=User.selectPlanet();
+            if (userAns!=0)
+            {
+                //Genera archivo HTML del planeta seleccionado.
+                HtmlFileControl.generateHTMLFile(userAns-1);
+                System.out.println(ConsoleColors.GREEN+"Archivo HTML generado correctamente.");
+                Time.waitForSeconds(750);
+            }
         }else{
             System.out.println(ConsoleColors.RED+"No hay planetas todavía");
         }
@@ -252,7 +253,7 @@ public class MainClass
                     loopIndex++;
                 }
                 System.out.println("0- Salir");
-               userAns=Keyboard.getInt("Selecciona un archivo");
+                userAns=Keyboard.getInt("Selecciona un archivo");
 
                if (userAns>fileList.length||userAns<0)
                {

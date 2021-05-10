@@ -134,11 +134,11 @@ public class User
         String planetName;
         do{
             planetName=insertText(Planet.NAME_MAX_LENGTH,"> Introduce el nombre del planeta al que orbita:");
-            if (!PlanetFileControl.seekPlanetName(Planet.formatName(planetName)))
+            if (PlanetFileControl.getPlanetPosition(Planet.formatName(planetName))==-1)
             {
                 System.out.println(ConsoleColors.RED+"ERROR: No hay un planeta registrado con ese nombre");
             }
-        }while(!PlanetFileControl.seekPlanetName(Planet.formatName(planetName)));
+        }while(PlanetFileControl.getPlanetPosition(Planet.formatName(planetName))==-1);
         
         int diameter= insertUnsignedInt(">Introduce su diametro:");
         int planetDistance=insertUnsignedInt(">Introduce la distancia al planeta:");

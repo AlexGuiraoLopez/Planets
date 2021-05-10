@@ -233,26 +233,30 @@ public class MainClass
          
          if (fileList.length>0)
          {
-            int loopIndex=1;
             int userAns;
 
             do{ //Muestra los archivos html existentes.
+                int loopIndex=1;
                 for (File f:fileList)
                {
                     System.out.println(loopIndex+"- "+f.getName());
                     loopIndex++;
                 }
-                
-               userAns=User.insertUnsignedInt("Selecciona un archivo");
+                System.out.println("0- Salir");
+               userAns=Keyboard.getInt("Selecciona un archivo");
 
-               if (userAns>fileList.length)
+               if (userAns>fileList.length||userAns<0)
                {
                    System.out.println(ConsoleColors.RED+"Selecciona un archivo válido...");
                }
-            }while(userAns>fileList.length);
+            }while(userAns>fileList.length||userAns<0);
 
-            HtmlFileControl.executeFile(userAns); //Ejecuta el archivo HTML.
-            System.out.println(ConsoleColors.GREEN+"Se ha ejecutado el archivo correctamente.");
+            if (userAns!=0)
+            {
+                HtmlFileControl.executeFile(userAns); //Ejecuta el archivo HTML.
+                System.out.println(ConsoleColors.GREEN+"Se ha ejecutado el archivo correctamente.");
+            }
+            
          }else{
              System.out.println(ConsoleColors.RED+"Todavía no existen archivos HTML...");
          }
